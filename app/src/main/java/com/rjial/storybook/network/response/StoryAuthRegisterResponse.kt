@@ -1,0 +1,12 @@
+package com.rjial.storybook.network.response
+
+import com.google.gson.annotations.SerializedName
+
+data class StoryAuthRegisterResponse(
+
+	@field:SerializedName("error")
+	val error: Boolean? = null,
+
+	@field:SerializedName("message")
+	val message: String? = null
+)

@@ -35,7 +35,7 @@ class CustomEditTextView: AppCompatEditText, View.OnTouchListener {
 
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         textAlignment = View.TEXT_ALIGNMENT_TEXT_START
         setBackgroundResource(R.drawable.bg_custom_edittext)
