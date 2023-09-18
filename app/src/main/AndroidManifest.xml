@@ -13,22 +13,29 @@
         android:theme="@style/Theme.StoryBook"
         tools:targetApi="31">
         <activity
-            android:name=".ui.story.add.AddStoryActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.story.list.ListStoryActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.authentication.AuthenticationActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.main.MainActivity"
+            android:name=".ui.splashscreen.SplashScreenActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.authentication.register.RegisterAuthActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.story.add.AddStoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.story.list.ListStoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.authentication.login.LoginAuthActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:exported="false">
         </activity>
     </application>
 

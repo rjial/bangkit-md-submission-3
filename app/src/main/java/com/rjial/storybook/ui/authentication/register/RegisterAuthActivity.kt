@@ -1,12 +1,12 @@
-package com.rjial.storybook.ui.authentication
+package com.rjial.storybook.ui.authentication.register
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.rjial.storybook.R
 
-class AuthenticationActivity : AppCompatActivity() {
+class RegisterAuthActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_authentication)
+        setContentView(R.layout.activity_register_auth)
     }
 }
