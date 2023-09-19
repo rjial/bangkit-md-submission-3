@@ -9,7 +9,7 @@ import com.rjial.storybook.data.preference.datastore
 import com.rjial.storybook.data.viewmodel.AppPreferencesViewModel
 import com.rjial.storybook.data.viewmodel.factory.AppPrefVMFactory
 import com.rjial.storybook.databinding.ActivitySplashScreenBinding
-import com.rjial.storybook.network.service.StoryAuthService
+import com.rjial.storybook.repository.StoryAuthAppPrefRepository
 import com.rjial.storybook.ui.authentication.login.LoginAuthActivity
 import com.rjial.storybook.ui.main.MainActivity
 import kotlinx.coroutines.CoroutineScope
@@ -29,7 +29,8 @@ class SplashScreenActivity : AppCompatActivity() {
             delay(3000L)
             val datastore = application.datastore
             val preferences = AppPreferences.getInstance(datastore)
-            val viewModel = ViewModelProvider(this@SplashScreenActivity, AppPrefVMFactory(preferences))[AppPreferencesViewModel::class.java]
+            val repository = StoryAuthAppPrefRepository.getInstance(preferences)
+            val viewModel = ViewModelProvider(this@SplashScreenActivity, AppPrefVMFactory(repository))[AppPreferencesViewModel::class.java]
             viewModel.isAuthorized().observe(this@SplashScreenActivity) {
                 if (it) {
                     val intent = Intent(this@SplashScreenActivity, MainActivity::class.java)
