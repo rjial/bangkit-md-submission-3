@@ -12,6 +12,7 @@ import com.rjial.storybook.databinding.ActivitySplashScreenBinding
 import com.rjial.storybook.repository.StoryAuthAppPrefRepository
 import com.rjial.storybook.ui.authentication.login.LoginAuthActivity
 import com.rjial.storybook.ui.main.MainActivity
+import com.rjial.storybook.util.injection.StoryAuthAppPrefInjection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -27,10 +28,7 @@ class SplashScreenActivity : AppCompatActivity() {
         setContentView(binding.root)
         mainScope.launch {
             delay(3000L)
-            val datastore = application.datastore
-            val preferences = AppPreferences.getInstance(datastore)
-            val repository = StoryAuthAppPrefRepository.getInstance(preferences)
-            val viewModel = ViewModelProvider(this@SplashScreenActivity, AppPrefVMFactory(repository))[AppPreferencesViewModel::class.java]
+            val viewModel = ViewModelProvider(this@SplashScreenActivity, AppPrefVMFactory(StoryAuthAppPrefInjection.provideRepository(application.datastore)))[AppPreferencesViewModel::class.java]
             viewModel.isAuthorized().observe(this@SplashScreenActivity) {
                 if (it) {
                     val intent = Intent(this@SplashScreenActivity, MainActivity::class.java)

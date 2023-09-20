@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.rjial.storybook.network.endpoint.StoryAuthEndpoint
 import com.rjial.storybook.network.response.StoryAuthLoginBody
 import com.rjial.storybook.network.response.StoryAuthLoginResponse
+import com.rjial.storybook.network.response.StoryAuthRegisterBody
+import com.rjial.storybook.network.response.StoryAuthRegisterResponse
 import com.rjial.storybook.network.service.StoryAuthService
 import com.rjial.storybook.repository.StoryAuthAppPrefRepository
 import com.rjial.storybook.util.ResponseResult
@@ -22,6 +24,8 @@ class AppPreferencesViewModel(private val repository: StoryAuthAppPrefRepository
     private val authService: StoryAuthEndpoint = StoryAuthService.getInstance().getService()
     private val _loginResponse: MutableLiveData<ResponseResult<StoryAuthLoginResponse?>> = MutableLiveData<ResponseResult<StoryAuthLoginResponse?>>()
     var loginResponse: LiveData<ResponseResult<StoryAuthLoginResponse?>> = _loginResponse
+    private val _registerResponse: MutableLiveData<ResponseResult<StoryAuthRegisterResponse?>> = MutableLiveData<ResponseResult<StoryAuthRegisterResponse?>>()
+    var registerResponse: LiveData<ResponseResult<StoryAuthRegisterResponse?>> = _registerResponse
     fun getTokenAuth(): LiveData<String> {
         return repository.getTokenAuth()
     }
@@ -64,6 +68,39 @@ class AppPreferencesViewModel(private val repository: StoryAuthAppPrefRepository
             _loginResponse.value = ResponseResult.Error("Failed to login : ${exc.message}")
         }
     }
+    fun doRegister(email: String, name: String, password: String, registerCallback: (String) -> Unit) {
+        try {
+            _registerResponse.value = ResponseResult.Loading
+            authService.registerFunc(StoryAuthRegisterBody(email, name, password)).enqueue(object: Callback<StoryAuthRegisterResponse> {
+                override fun onResponse(
+                    call: Call<StoryAuthRegisterResponse>,
+                    response: Response<StoryAuthRegisterResponse>
+                ) {
+                    val body = response.body()
+                    if (response.isSuccessful && body != null) {
+                        if(!body.error!!) {
+                            registerCallback(body.message!!)
+                        } else {
+                            val jsonObject = JSONObject(response.errorBody()?.string()!!)
+                            _registerResponse.value = ResponseResult.Error("Failed to login : ${jsonObject.getString("message")}")
+                        }
+                        _registerResponse.value = ResponseResult.Success(body)
+                    } else {
+                        val jsonObject = JSONObject(response.errorBody()?.string()!!)
+                        _registerResponse.value = ResponseResult.Error("Failed to login : ${jsonObject.getString("message")}")
+                    }
+                }
+
+                override fun onFailure(call: Call<StoryAuthRegisterResponse>, t: Throwable) {
+                    _registerResponse.value = ResponseResult.Error("Failed to login : ${t.message}")
+                }
+
+            })
+        } catch (exc: Exception){
+            _registerResponse.value = ResponseResult.Error("Failed to login : ${exc.message}")
+        }
+    }
+
 
     fun isAuthorized(): LiveData<Boolean> {
         return repository.isAuthorized().asLiveData()
