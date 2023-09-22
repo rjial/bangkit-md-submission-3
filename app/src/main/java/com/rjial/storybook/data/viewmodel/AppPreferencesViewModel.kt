@@ -36,6 +36,13 @@ class AppPreferencesViewModel(private val repository: StoryAuthAppPrefRepository
         }
     }
 
+    fun doLogout() {
+        viewModelScope.launch {
+            repository.purgeUser()
+            repository.purgeToken()
+        }
+    }
+
     fun doLogin(email: String, password: String) {
         try {
             _loginResponse.value = ResponseResult.Loading

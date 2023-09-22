@@ -31,4 +31,11 @@ class StoryAuthAppPrefRepository(
     fun isAuthorized(): Flow<Boolean> {
         return pref.isAuthorized()
     }
+
+    suspend fun purgeToken() {
+        return pref.setTokenAuth("")
+    }
+    suspend fun purgeUser() {
+        return pref.setUserAuth("")
+    }
 }

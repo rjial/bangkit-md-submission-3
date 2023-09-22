@@ -9,13 +9,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rjial.storybook.R
+import com.rjial.storybook.data.preference.datastore
+import com.rjial.storybook.data.viewmodel.AppPreferencesViewModel
 import com.rjial.storybook.data.viewmodel.StoryListViewModel
+import com.rjial.storybook.data.viewmodel.factory.AppPrefVMFactory
 import com.rjial.storybook.data.viewmodel.factory.StoryListVMFactory
 import com.rjial.storybook.databinding.ActivityMainBinding
 import com.rjial.storybook.ui.authentication.login.LoginAuthActivity
 import com.rjial.storybook.ui.main.adapter.StoryListAdapter
 import com.rjial.storybook.ui.story.add.AddStoryActivity
 import com.rjial.storybook.util.ResponseResult
+import com.rjial.storybook.util.injection.StoryAuthAppPrefInjection
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -35,6 +39,21 @@ class MainActivity : AppCompatActivity() {
         binding.btnCreateStoryFAB.setOnClickListener {
             val intent = Intent(this@MainActivity, AddStoryActivity::class.java)
             startActivity(intent)
+        }
+        binding.appBarStory.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.action_logout -> {
+                    val viewModel = ViewModelProvider(this@MainActivity, AppPrefVMFactory(
+                        StoryAuthAppPrefInjection.provideRepository(application.datastore))
+                    )[AppPreferencesViewModel::class.java]
+                    viewModel.doLogout()
+                    finish()
+                    val intent = Intent(this@MainActivity, LoginAuthActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                else -> false
+            }
         }
     }
 
