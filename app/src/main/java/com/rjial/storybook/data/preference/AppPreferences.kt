@@ -6,6 +6,8 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.google.gson.Gson
+import com.rjial.storybook.network.response.LoginResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -24,6 +26,7 @@ class AppPreferences private constructor(private val dataStore: DataStore<Prefer
     }
 
     private val tokenAuth = stringPreferencesKey("token_auth")
+    private val userAuth = stringPreferencesKey("user_auth")
 
     fun getTokenAuth(): Flow<String> {
         return dataStore.data.map {
@@ -34,6 +37,19 @@ class AppPreferences private constructor(private val dataStore: DataStore<Prefer
     suspend fun setTokenAuth(token: String) {
         dataStore.edit {
             it[tokenAuth] = token
+        }
+    }
+
+    fun getUserAuth(): Flow<LoginResult> {
+        return dataStore.data.map {
+            val gson = Gson().fromJson<LoginResult>(it[userAuth], LoginResult::class.java)
+            return@map gson!!
+        }
+    }
+
+    suspend fun setUserAuth(user: String) {
+        dataStore.edit {
+            it[userAuth] = user
         }
     }
 
