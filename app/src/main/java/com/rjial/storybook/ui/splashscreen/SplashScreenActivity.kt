@@ -1,8 +1,11 @@
 package com.rjial.storybook.ui.splashscreen
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.rjial.storybook.data.preference.AppPreferences
 import com.rjial.storybook.data.preference.datastore
@@ -26,6 +29,16 @@ class SplashScreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val animY = ObjectAnimator.ofFloat(binding.imgSplashScreen, View.TRANSLATION_Y, 120f, 0f).apply {
+            duration = 1000
+        }
+        val animAlpha = ObjectAnimator.ofFloat(binding.imgSplashScreen, View.ALPHA, 0f, 100f).apply {
+            duration = 10000
+        }
+        AnimatorSet().apply {
+            playTogether(animY, animAlpha)
+            start()
+        }
         mainScope.launch {
             delay(3000L)
             val viewModel = ViewModelProvider(this@SplashScreenActivity, AppPrefVMFactory(StoryAuthAppPrefInjection.provideRepository(application.datastore)))[AppPreferencesViewModel::class.java]
