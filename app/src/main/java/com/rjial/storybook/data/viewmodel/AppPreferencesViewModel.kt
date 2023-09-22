@@ -78,7 +78,7 @@ class AppPreferencesViewModel(private val repository: StoryAuthAppPrefRepository
     fun doRegister(email: String, name: String, password: String, registerCallback: (String) -> Unit) {
         try {
             _registerResponse.value = ResponseResult.Loading
-            authService.registerFunc(StoryAuthRegisterBody(email, name, password)).enqueue(object: Callback<StoryAuthRegisterResponse> {
+            authService.registerFunc(StoryAuthRegisterBody(name, email, password)).enqueue(object: Callback<StoryAuthRegisterResponse> {
                 override fun onResponse(
                     call: Call<StoryAuthRegisterResponse>,
                     response: Response<StoryAuthRegisterResponse>
