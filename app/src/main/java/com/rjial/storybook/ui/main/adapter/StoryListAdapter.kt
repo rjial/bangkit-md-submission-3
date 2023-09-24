@@ -1,7 +1,11 @@
 package com.rjial.storybook.ui.main.adapter
 
+import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -9,6 +13,7 @@ import coil.load
 import com.rjial.storybook.R
 import com.rjial.storybook.databinding.ItemStoryBinding
 import com.rjial.storybook.network.response.ListStoryItem
+import com.rjial.storybook.ui.story.detail.DetailStoryActivity
 
 class StoryListAdapter: ListAdapter<ListStoryItem, StoryListAdapter.ViewHolder>(StoryListDiffCallback) {
 
@@ -30,6 +35,18 @@ class StoryListAdapter: ListAdapter<ListStoryItem, StoryListAdapter.ViewHolder>(
                 }
                 txtTitleStory.text = storyItem.name
                 txtSubtitleStory.text = storyItem.description
+                root.setOnClickListener {
+                    val intent = Intent(it.context, DetailStoryActivity::class.java)
+                    intent.putExtra(DetailStoryActivity.DETAIL_STORY_EXTRA, storyItem)
+                    it.context.startActivity(intent,
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(
+                            it.context as Activity,
+                            Pair(imgStoryItem, "imgdetail"),
+                            Pair(txtTitleStory, "title"),
+                            Pair(txtSubtitleStory, "desc")
+                        ).toBundle()
+                    )
+                }
             }
 
         }

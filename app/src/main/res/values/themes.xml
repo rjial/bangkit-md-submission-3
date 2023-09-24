@@ -3,7 +3,9 @@
     <style name="Base.Theme.StoryBook" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:windowActivityTransitions">true</item>
     </style>
 
     <style name="Theme.StoryBook" parent="Base.Theme.StoryBook" />
+
 </resources>
