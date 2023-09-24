@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
                     is ResponseResult.Loading -> loadingFunc(true)
                     is ResponseResult.Success -> {
                         loadingFunc(false)
-                        adapter.submitList(it.data.listStory)
+                        adapter.submitList(it.data.listStory.sortedByDescending { item -> item.createdAt })
                     }
                     is ResponseResult.Error -> {
                         loadingFunc(false)
