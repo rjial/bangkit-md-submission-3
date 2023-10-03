@@ -33,5 +33,10 @@
     </style>
 
     <style name="Theme.StoryBook" parent="Base.Theme.StoryBook" />
+    
+    <style name="ThemeOverlay.StoryBook.AppWidgetContainer" parent="">
+<!--        <item name="appWidgetBackgroundColor">@color/light_blue_600</item>-->
+<!--        <item name="appWidgetTextColor">@color/light_blue_50</item>-->
+    </style>
 
 </resources>

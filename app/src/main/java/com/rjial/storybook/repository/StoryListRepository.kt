@@ -56,6 +56,8 @@ class StoryListRepository(
         return result
     }
 
+    fun getAllStoriesOnlyCall(): Call<StoryListResponse> = apiService.getAllStories()
+
     fun uploadStory(photo: MultipartBody.Part, description: RequestBody): LiveData<ResponseResult<StoryAddResponse>>  {
         resultUpload.value = ResponseResult.Loading
         try {
