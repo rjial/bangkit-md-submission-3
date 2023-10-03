@@ -25,7 +25,7 @@
             android:id="@+id/txtLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Login"
+            android:text="@string/login"
             style="?attr/textAppearanceDisplayLarge"
             android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@id/imgUserLogin"
@@ -37,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
-            android:hint="Masukkan Email anda"
+            android:hint="@string/placeholder_email"
             tools:text="mboh"
             android:layout_marginTop="36dp"
             app:layout_constraintTop_toBottomOf="@id/txtLogin"
@@ -47,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:hint="Masukkan Password Anda"
+            android:hint="@string/placeholder_password"
             tools:text="mboh"
             android:layout_marginTop="24dp"
             app:layout_constraintTop_toBottomOf="@id/edtEmailLogin"
@@ -65,7 +65,7 @@
                 android:id="@+id/btnStoryLoginProceed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Sign In"
+                android:text="@string/sign_in"
                 />
             <ProgressBar
                 android:id="@+id/pbLoginLoading"
@@ -79,7 +79,7 @@
                 android:id="@+id/btnStoryToRegister"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Register"
+                android:text="@string/register"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 />
         </LinearLayout>

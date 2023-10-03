@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login">Masuk</string>
+    <string name="placeholder_email">Masukkan email anda</string>
+    <string name="placeholder_password">Masukkan password anda</string>
+    <string name="sign_in">Masuk</string>
+    <string name="register">Daftar</string>
+    <string name="placeholder_nama">Masukkan nama  anda</string>
+    <string name="camera">Kamera</string>
+    <string name="gallery">Galeri</string>
+    <string name="upload">Unggah</string>
+    <string name="logout">Keluar</string>
+</resources>

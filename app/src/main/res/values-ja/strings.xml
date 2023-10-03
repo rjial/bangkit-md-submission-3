@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login">ログイン</string>
+    <string name="placeholder_email">Eメールを入力</string>
+    <string name="placeholder_password">パスワードを入力する</string>
+    <string name="sign_in">ログイン</string>
+    <string name="register">リスト</string>
+    <string name="placeholder_nama">名前を入力</string>
+    <string name="camera">カメラ</string>
+    <string name="gallery">ギャラリー</string>
+    <string name="upload">アップロード</string>
+    <string name="logout">アウト</string>
+</resources>

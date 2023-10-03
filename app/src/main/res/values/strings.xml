@@ -1,3 +1,13 @@
 <resources>
-    <string name="app_name">Story Book</string>
+    <string name="app_name" translatable="false">Story Book</string>
+    <string name="login">Login</string>
+    <string name="placeholder_email">Insert your email</string>
+    <string name="placeholder_password">Insert your password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="register">Register</string>
+    <string name="placeholder_nama">Insert your name</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="upload">Upload</string>
+    <string name="logout">Logout</string>
 </resources>

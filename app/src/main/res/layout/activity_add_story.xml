@@ -32,13 +32,13 @@
                 android:id="@+id/btnAddStoryImgCamera"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Camera"
+                android:text="@string/camera"
                 android:layout_marginEnd="10dp"/>
             <Button
                 android:id="@+id/btnAddStoryImgGallery"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Gallery"/>
+                android:text="@string/gallery"/>
         </LinearLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/lytDescAddStory"
@@ -62,7 +62,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="16dp"
-            android:text="Upload"/>
+            android:text="@string/upload"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
