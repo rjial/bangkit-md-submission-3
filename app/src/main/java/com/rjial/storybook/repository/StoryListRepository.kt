@@ -1,19 +1,16 @@
 package com.rjial.storybook.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.rjial.storybook.network.endpoint.StoryEndpoint
 import com.rjial.storybook.network.response.StoryAddResponse
 import com.rjial.storybook.network.response.StoryListResponse
-import com.rjial.storybook.network.service.StoryListService
 import com.rjial.storybook.util.ResponseResult
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.http.Multipart
 
 class StoryListRepository(
     private val apiService: StoryEndpoint
@@ -43,6 +40,7 @@ class StoryListRepository(
                 val body = response.body()
                 if(response.isSuccessful && body != null) {
                     result.value = ResponseResult.Success(body)
+
                 } else {
                     result.value = ResponseResult.Error("Failed to fetch stories")
                 }
@@ -55,8 +53,6 @@ class StoryListRepository(
 
         return result
     }
-
-    fun getAllStoriesOnlyCall(): Call<StoryListResponse> = apiService.getAllStories()
 
     fun uploadStory(photo: MultipartBody.Part, description: RequestBody): LiveData<ResponseResult<StoryAddResponse>>  {
         resultUpload.value = ResponseResult.Loading

@@ -10,4 +10,5 @@
     <string name="gallery">ギャラリー</string>
     <string name="upload">アップロード</string>
     <string name="logout">アウト</string>
+    <string name="empty">ブランク</string>
 </resources>

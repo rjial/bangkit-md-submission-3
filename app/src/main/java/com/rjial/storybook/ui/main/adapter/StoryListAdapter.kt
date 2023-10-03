@@ -11,11 +11,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.rjial.storybook.R
+import com.rjial.storybook.data.viewmodel.StoryImageDatabaseViewModel
 import com.rjial.storybook.databinding.ItemStoryBinding
 import com.rjial.storybook.network.response.ListStoryItem
 import com.rjial.storybook.ui.story.detail.DetailStoryActivity
 
-class StoryListAdapter: ListAdapter<ListStoryItem, StoryListAdapter.ViewHolder>(StoryListDiffCallback) {
+class StoryListAdapter(private val storyImgVM: StoryImageDatabaseViewModel): ListAdapter<ListStoryItem, StoryListAdapter.ViewHolder>(StoryListDiffCallback) {
 
     object StoryListDiffCallback: DiffUtil.ItemCallback<ListStoryItem>() {
         override fun areItemsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
@@ -28,8 +29,10 @@ class StoryListAdapter: ListAdapter<ListStoryItem, StoryListAdapter.ViewHolder>(
 
     }
     class ViewHolder(val binding: ItemStoryBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(storyItem: ListStoryItem) {
+        fun bind(storyItem: ListStoryItem, storyImgVM: StoryImageDatabaseViewModel) {
             with(binding) {
+//                val bitmap = Picasso.Builder(binding.root.context).build().load(storyItem.photoUrl).get()
+                storyImgVM.insert(storyItem.photoUrl)
                 imgStoryItem.load(storyItem.photoUrl) {
                     placeholder(R.drawable.ic_launcher_background)
                 }
@@ -54,11 +57,12 @@ class StoryListAdapter: ListAdapter<ListStoryItem, StoryListAdapter.ViewHolder>(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        storyImgVM.deleteAllStoryImages()
         val binding = ItemStoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), storyImgVM)
     }
 }
