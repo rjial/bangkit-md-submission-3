@@ -7,7 +7,6 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
-import com.rjial.storybook.R
 import com.rjial.storybook.data.viewmodel.StoryListViewModel
 import com.rjial.storybook.data.viewmodel.factory.StoryListVMFactory
 import com.rjial.storybook.databinding.ActivityAddStoryBinding
@@ -18,7 +17,6 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import java.net.URI
 
 class AddStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddStoryBinding

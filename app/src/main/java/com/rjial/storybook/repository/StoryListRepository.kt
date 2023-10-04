@@ -8,6 +8,8 @@ import com.rjial.storybook.network.response.StoryListResponse
 import com.rjial.storybook.util.ResponseResult
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import org.json.JSONObject
+import org.json.JSONTokener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -67,7 +69,8 @@ class StoryListRepository(
                     if (response.isSuccessful && body != null) {
                         resultUpload.value = ResponseResult.Success(body)
                     } else {
-                        resultUpload.value = ResponseResult.Error("Failed to upload story : ${body!!.message}")
+                        val errorRes = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+                        resultUpload.value = ResponseResult.Error("Failed to upload story : ${errorRes.getString("message")}")
                     }
                 }
 
