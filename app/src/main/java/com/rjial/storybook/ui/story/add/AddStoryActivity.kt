@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
+import com.rjial.storybook.R
 import com.rjial.storybook.data.viewmodel.StoryListViewModel
 import com.rjial.storybook.data.viewmodel.factory.StoryListVMFactory
 import com.rjial.storybook.databinding.ActivityAddStoryBinding
@@ -103,13 +104,13 @@ class AddStoryActivity : AppCompatActivity() {
         when(loading) {
             true -> {
                 binding.btnUploadAddStory.apply {
-                    text = "Loading"
+                    text = getString(R.string.loading)
                     isEnabled = false
                 }
             }
             false -> {
                 binding.btnUploadAddStory.apply {
-                    text = "Upload"
+                    text = getString(R.string.upload)
                     isEnabled = true
                 }
             }
