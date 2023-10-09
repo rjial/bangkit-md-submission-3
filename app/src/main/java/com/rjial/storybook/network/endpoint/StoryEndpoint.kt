@@ -19,6 +19,8 @@ interface StoryEndpoint {
     @POST("stories")
     fun uploadImage(
         @Part photo: MultipartBody.Part,
-        @Part("description") description: RequestBody
+        @Part("description") description: RequestBody,
+        @Part("lat") lat: RequestBody? = null,
+        @Part("lon") lon: RequestBody? = null
     ): Call<StoryAddResponse>
 }

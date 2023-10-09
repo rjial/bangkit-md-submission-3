@@ -12,4 +12,5 @@
     <string name="logout">Keluar</string>
     <string name="empty">Kosong</string>
     <string name="loading">Memuat</string>
+    <string name="location">Lokasi : %1$s, %2$s</string>
 </resources>

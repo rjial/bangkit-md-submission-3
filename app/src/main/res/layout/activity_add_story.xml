@@ -40,11 +40,20 @@
                 android:layout_height="wrap_content"
                 android:text="@string/gallery"/>
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtLocationAddStory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/location"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lytButtonImgStory" />
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/lytDescAddStory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/lytButtonImgStory"
+            app:layout_constraintTop_toBottomOf="@id/txtLocationAddStory"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
             <com.google.android.material.textfield.TextInputEditText

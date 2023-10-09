@@ -56,10 +56,10 @@ class StoryListRepository(
         return result
     }
 
-    fun uploadStory(photo: MultipartBody.Part, description: RequestBody): LiveData<ResponseResult<StoryAddResponse>>  {
+    fun uploadStory(photo: MultipartBody.Part, description: RequestBody, lat: RequestBody? = null, lon: RequestBody? = null): LiveData<ResponseResult<StoryAddResponse>>  {
         resultUpload.value = ResponseResult.Loading
         try {
-            val upload = apiService.uploadImage(photo, description)
+            val upload = apiService.uploadImage(photo, description, lat, lon)
             upload.enqueue(object : Callback<StoryAddResponse> {
                 override fun onResponse(
                     call: Call<StoryAddResponse>,

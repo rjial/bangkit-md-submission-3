@@ -12,4 +12,5 @@
     <string name="logout">アウト</string>
     <string name="empty">ブランク</string>
     <string name="loading">ローディング</string>
+    <string name="location">場所 : %1$s, %2$s</string>
 </resources>
