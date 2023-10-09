@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools" >
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -13,13 +13,33 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.StoryBook"
-        tools:targetApi="31">
+        tools:targetApi="31" >
+
+        <!--
+             TODO: Before you run your application, you need a Google Maps API key.
+
+             To get one, follow the directions here:
+
+                https://developers.google.com/maps/documentation/android-sdk/get-api-key
+
+             Once you have your API key (it starts with "AIza"), define a new property in your
+             project's local.properties file (e.g. MAPS_API_KEY=Aiza...), and replace the
+             "YOUR_API_KEY" string in this file with "${MAPS_API_KEY}".
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyB2EjN6WtVb5P3utHxpq8hsHM6IrzwkfPo" />
+
+        <activity
+            android:name=".ui.map.StoryMapActivity"
+            android:exported="false"
+            android:label="@string/title_activity_story_map" />
         <activity
             android:name=".ui.story.detail.DetailStoryActivity"
             android:exported="false" />
         <activity
             android:name=".ui.splashscreen.SplashScreenActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,13 +60,13 @@
             android:exported="false" />
         <activity
             android:name=".ui.main.MainActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
 
         <service
             android:name="com.google.android.gms.metadata.ModuleDependencies"
             android:enabled="false"
             android:exported="false"
-            tools:ignore="MissingClass">
+            tools:ignore="MissingClass" >
             <intent-filter>
                 <action android:name="com.google.android.gms.metadata.MODULE_DEPENDENCIES" />
             </intent-filter>
@@ -60,13 +80,15 @@
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.rjial.storybook.fileprovider"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true" >
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-        <receiver android:name=".ui.story.widget.ImagesBannerWidget"
-            android:exported="false">
+
+        <receiver
+            android:name=".ui.story.widget.ImagesBannerWidget"
+            android:exported="false" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -75,6 +97,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/image_banner_widget_info" />
         </receiver>
+
         <service
             android:name=".ui.story.widget.StackWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />

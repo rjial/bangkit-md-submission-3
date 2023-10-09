@@ -9,10 +9,11 @@ import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Query
 
 interface StoryEndpoint {
     @GET("stories")
-    fun getAllStories(): Call<StoryListResponse>
+    fun getAllStories(@Query("location") location: Int = 0): Call<StoryListResponse>
 
     @Multipart
     @POST("stories")

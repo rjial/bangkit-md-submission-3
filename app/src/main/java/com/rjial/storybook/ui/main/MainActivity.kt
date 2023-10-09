@@ -18,6 +18,7 @@ import com.rjial.storybook.data.viewmodel.factory.StoryListVMFactory
 import com.rjial.storybook.databinding.ActivityMainBinding
 import com.rjial.storybook.ui.authentication.login.LoginAuthActivity
 import com.rjial.storybook.ui.main.adapter.StoryListAdapter
+import com.rjial.storybook.ui.map.StoryMapActivity
 import com.rjial.storybook.ui.story.add.AddStoryActivity
 import com.rjial.storybook.util.ResponseResult
 import com.rjial.storybook.util.factory.StoryImageDatabaseViewModelFactory
@@ -54,6 +55,11 @@ class MainActivity : AppCompatActivity() {
                     viewModel.doLogout()
                     finish()
                     val intent = Intent(this@MainActivity, LoginAuthActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.action_map -> {
+                    val intent = Intent(this@MainActivity, StoryMapActivity::class.java)
                     startActivity(intent)
                     true
                 }

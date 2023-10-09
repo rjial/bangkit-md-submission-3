@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-parcelize")
     id("com.google.devtools.ksp")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -59,6 +60,7 @@ dependencies {
     implementation("com.squareup.picasso:picasso:2.8")
     implementation("androidx.exifinterface:exifinterface:1.3.6")
     implementation("androidx.room:room-runtime:2.5.2")
+    implementation("com.google.android.gms:play-services-maps:18.1.0")
     ksp("androidx.room:room-compiler:2.5.2")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

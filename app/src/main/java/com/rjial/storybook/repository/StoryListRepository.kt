@@ -32,9 +32,9 @@ class StoryListRepository(
         }
     }
 
-    fun getAllStories(): LiveData<ResponseResult<StoryListResponse>> {
+    fun getAllStories(withLoc: Boolean = false): LiveData<ResponseResult<StoryListResponse>> {
         result.value = ResponseResult.Loading
-        apiService.getAllStories().enqueue(object: Callback<StoryListResponse> {
+        apiService.getAllStories(if(withLoc) 1 else 0).enqueue(object: Callback<StoryListResponse> {
             override fun onResponse(
                 call: Call<StoryListResponse>,
                 response: Response<StoryListResponse>

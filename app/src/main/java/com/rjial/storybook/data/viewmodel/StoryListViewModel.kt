@@ -15,9 +15,8 @@ import okhttp3.RequestBody
 class StoryListViewModel(context: Context): ViewModel() {
     private val storyListRepository: StoryListRepository = StoryListInjection.provideInjection(context)
     private var _stories: MutableLiveData<ResponseResult<StoryListResponse>> = MutableLiveData<ResponseResult<StoryListResponse>>()
-    val stories: LiveData<ResponseResult<StoryListResponse>> = _stories
 
-    fun getAllStories(): LiveData<ResponseResult<StoryListResponse>> = storyListRepository.getAllStories()
+    fun getAllStories(withLoc: Boolean = false): LiveData<ResponseResult<StoryListResponse>> = storyListRepository.getAllStories(withLoc)
 
     fun uploadStory(photo: MultipartBody.Part, description: RequestBody): LiveData<ResponseResult<StoryAddResponse>> = storyListRepository.uploadStory(photo, description)
 }
