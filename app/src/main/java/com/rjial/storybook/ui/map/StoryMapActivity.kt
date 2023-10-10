@@ -58,11 +58,13 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
         loadStoriesWithLoc() {
             it.listStory.forEach {story ->
                 listStory.add(story)
-                val latLng = LatLng(story.lat.toDouble(), story.lon.toDouble())
-                mMap.addMarker(MarkerOptions()
-                    .position(latLng)
-                    .title(story.name))
-                boundsBuilder.include(latLng)
+                if (story.lat != null && story.lon != null) {
+                    val latLng = LatLng(story.lat.toDouble(), story.lon.toDouble())
+                    mMap.addMarker(MarkerOptions()
+                        .position(latLng)
+                        .title(story.name))
+                    boundsBuilder.include(latLng)
+                }
             }
             val bounds = boundsBuilder.build()
             mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(

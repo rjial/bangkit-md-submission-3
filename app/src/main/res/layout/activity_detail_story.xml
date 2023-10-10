@@ -37,6 +37,27 @@
             app:layout_constraintStart_toStartOf="parent"
             style="@style/TextAppearance.AppCompat.Subhead"
             tools:text="Lorem Ipsum"/>
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapDetailStory"
+            app:layout_constraintTop_toBottomOf="@id/txtDescDetailStory"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"/>
+<!--        <FrameLayout-->
+<!--            android:id="@+id/lytMapFragment"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/txtDescDetailStory"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content">-->
+
+<!--            <FrameLayout-->
+<!--                xmlns:map="http://schemas.android.com/apk/res-auto"-->
+<!--                android:id="@+id/mapDetailStory"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="300dp"-->
+<!--                />-->
+
+<!--        </FrameLayout>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
