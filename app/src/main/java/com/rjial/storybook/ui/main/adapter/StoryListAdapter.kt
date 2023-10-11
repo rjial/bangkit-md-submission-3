@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.rjial.storybook.R
@@ -16,7 +16,7 @@ import com.rjial.storybook.databinding.ItemStoryBinding
 import com.rjial.storybook.network.response.ListStoryItem
 import com.rjial.storybook.ui.story.detail.DetailStoryActivity
 
-class StoryListAdapter(private val storyImgVM: StoryImageDatabaseViewModel): ListAdapter<ListStoryItem, StoryListAdapter.ViewHolder>(StoryListDiffCallback) {
+class StoryListAdapter(private val storyImgVM: StoryImageDatabaseViewModel): PagingDataAdapter<ListStoryItem, StoryListAdapter.ViewHolder>(StoryListDiffCallback) {
 
     object StoryListDiffCallback: DiffUtil.ItemCallback<ListStoryItem>() {
         override fun areItemsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
@@ -63,6 +63,6 @@ class StoryListAdapter(private val storyImgVM: StoryImageDatabaseViewModel): Lis
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position), storyImgVM)
+        holder.bind(requireNotNull(getItem(position)), storyImgVM)
     }
 }

@@ -2,7 +2,7 @@ package com.rjial.storybook.repository
 
 import android.content.Context
 import com.rjial.storybook.data.database.dao.StoryImageDao
-import com.rjial.storybook.data.database.database.StoryImageDatabase
+import com.rjial.storybook.data.database.database.StoryListDatabase
 import com.rjial.storybook.data.database.entity.StoryImageEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -14,7 +14,7 @@ class StoryImageDatabaseRepository(context: Context) {
     private var executorService: ExecutorService = Executors.newSingleThreadExecutor()
 
     init {
-        val db = StoryImageDatabase.getInstance(context.applicationContext)
+        val db = StoryListDatabase.getInstance(context.applicationContext)
         storyImageDao = db.storyImageDao()
     }
 

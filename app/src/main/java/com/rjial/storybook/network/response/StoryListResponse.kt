@@ -1,6 +1,8 @@
 package com.rjial.storybook.network.response
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
@@ -17,6 +19,7 @@ data class StoryListResponse(
 )
 
 @Parcelize
+@Entity
 data class ListStoryItem(
 
 	@field:SerializedName("photoUrl")
@@ -35,6 +38,7 @@ data class ListStoryItem(
 	val lon: Float?,
 
 	@field:SerializedName("id")
+	@PrimaryKey
 	val id: String,
 
 	@field:SerializedName("lat")

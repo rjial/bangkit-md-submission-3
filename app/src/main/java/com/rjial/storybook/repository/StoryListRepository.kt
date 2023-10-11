@@ -2,10 +2,20 @@ package com.rjial.storybook.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.liveData
+import com.rjial.storybook.data.database.database.StoryListDatabase
+import com.rjial.storybook.data.paging.mediator.StoryListRemoteMediator
+import com.rjial.storybook.data.paging.source.StoryListPagingSource
 import com.rjial.storybook.network.endpoint.StoryEndpoint
+import com.rjial.storybook.network.response.ListStoryItem
 import com.rjial.storybook.network.response.StoryAddResponse
 import com.rjial.storybook.network.response.StoryListResponse
 import com.rjial.storybook.util.ResponseResult
+import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.json.JSONObject
@@ -15,7 +25,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class StoryListRepository(
-    private val apiService: StoryEndpoint
+    private val apiService: StoryEndpoint,
+    private val database: StoryListDatabase
 ) {
     private val result = MutableLiveData<ResponseResult<StoryListResponse>>()
     private val resultUpload = MutableLiveData<ResponseResult<StoryAddResponse>>()
@@ -24,17 +35,17 @@ class StoryListRepository(
         @Volatile
         private var instance: StoryListRepository? = null
 
-        fun getInstance(apiService: StoryEndpoint): StoryListRepository {
+        fun getInstance(apiService: StoryEndpoint, database: StoryListDatabase): StoryListRepository {
             return instance ?: synchronized(this) {
-                instance = StoryListRepository(apiService)
+                instance = StoryListRepository(apiService, database)
                 return instance!!
             }
         }
     }
 
-    fun getAllStories(withLoc: Boolean = false): LiveData<ResponseResult<StoryListResponse>> {
+    fun getAllStories(withLoc: Boolean = false, page: Int? = 1, size: Int? = 10): LiveData<ResponseResult<StoryListResponse>> {
         result.value = ResponseResult.Loading
-        apiService.getAllStories(if(withLoc) 1 else 0).enqueue(object: Callback<StoryListResponse> {
+        apiService.getAllStories(location = if(withLoc) 1 else 0, page = page, size = size).enqueue(object: Callback<StoryListResponse> {
             override fun onResponse(
                 call: Call<StoryListResponse>,
                 response: Response<StoryListResponse>
@@ -55,6 +66,44 @@ class StoryListRepository(
 
         return result
     }
+
+//    private fun storyPager(withLoc: Boolean): Pager {
+//        return Pager(
+//            config = PagingConfig(
+//                pageSize = 10
+//            ),
+//            pagingSourceFactory = {
+//                StoryListPagingSource(apiService, withLoc)
+//            }
+//        )
+//    }
+
+    @OptIn(ExperimentalPagingApi::class)
+    fun getAllStoriesNew(withLoc: Boolean): LiveData<PagingData<ListStoryItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 10
+            ),
+            remoteMediator = StoryListRemoteMediator(database, apiService, withLoc),
+            pagingSourceFactory = {
+                database.storyListDao().getAllStories()
+//                StoryListPagingSource(apiService, withLoc)
+            }
+        ).liveData
+    }
+
+    fun getAllStoriesFlow(withLoc: Boolean): Flow<PagingData<ListStoryItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 10
+            ),
+            pagingSourceFactory = {
+                StoryListPagingSource(apiService, withLoc)
+            }
+        ).flow
+    }
+
+
 
     fun uploadStory(photo: MultipartBody.Part, description: RequestBody, lat: RequestBody? = null, lon: RequestBody? = null): LiveData<ResponseResult<StoryAddResponse>>  {
         resultUpload.value = ResponseResult.Loading

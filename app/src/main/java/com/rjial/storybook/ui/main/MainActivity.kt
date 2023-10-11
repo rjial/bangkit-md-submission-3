@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,7 +19,6 @@ import com.rjial.storybook.ui.authentication.login.LoginAuthActivity
 import com.rjial.storybook.ui.main.adapter.StoryListAdapter
 import com.rjial.storybook.ui.map.StoryMapActivity
 import com.rjial.storybook.ui.story.add.AddStoryActivity
-import com.rjial.storybook.util.ResponseResult
 import com.rjial.storybook.util.factory.StoryImageDatabaseViewModelFactory
 import com.rjial.storybook.util.injection.StoryAuthAppPrefInjection
 
@@ -92,21 +90,22 @@ class MainActivity : AppCompatActivity() {
             load.removeObservers(this)
         }
         load.observe(this) {
-            if (it != null) {
-                when (it) {
-                    is ResponseResult.Loading -> loadingFunc(true)
-                    is ResponseResult.Success -> {
-                        loadingFunc(false)
-                        adapter.submitList(it.data.listStory.sortedByDescending { item -> item.createdAt })
-                    }
-                    is ResponseResult.Error -> {
-                        loadingFunc(false)
-                        Toast.makeText(this@MainActivity, it.error, Toast.LENGTH_SHORT).show()
-                    }
-                }
-            } else {
-                Toast.makeText(this@MainActivity, "Failed to fetch data", Toast.LENGTH_SHORT).show()
-            }
+            adapter.submitData(lifecycle, it)
+//            if (it != null) {
+//                when (it) {
+//                    is ResponseResult.Loading -> loadingFunc(true)
+//                    is ResponseResult.Success -> {
+//                        loadingFunc(false)
+//                        adapter.submitList(it.data.listStory.sortedByDescending { item -> item.createdAt })
+//                    }
+//                    is ResponseResult.Error -> {
+//                        loadingFunc(false)
+//                        Toast.makeText(this@MainActivity, it.error, Toast.LENGTH_SHORT).show()
+//                    }
+//                }
+//            } else {
+//                Toast.makeText(this@MainActivity, "Failed to fetch data", Toast.LENGTH_SHORT).show()
+//            }
         }
     }
 }

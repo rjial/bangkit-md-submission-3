@@ -1,6 +1,7 @@
 package com.rjial.storybook.util.injection
 
 import android.content.Context
+import com.rjial.storybook.data.database.database.StoryListDatabase
 import com.rjial.storybook.data.preference.AppPreferences
 import com.rjial.storybook.data.preference.datastore
 import com.rjial.storybook.network.service.StoryListService
@@ -14,7 +15,8 @@ object StoryListInjection {
         val pref = AppPreferences.getInstance(datastore)
         val token = runBlocking { pref.getTokenAuth().first() }
         val apiService = StoryListService.getInstance().getService(token)
-        return StoryListRepository.getInstance(apiService)
+        val database = StoryListDatabase.getInstance(context)
+        return StoryListRepository.getInstance(apiService, database)
     }
 
 }

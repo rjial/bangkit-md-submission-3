@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -17,7 +16,6 @@ import com.rjial.storybook.R
 import com.rjial.storybook.data.viewmodel.StoryListViewModel
 import com.rjial.storybook.data.viewmodel.factory.StoryListVMFactory
 import com.rjial.storybook.databinding.ActivityStoryMapBinding
-import com.rjial.storybook.network.response.ListStoryItem
 import com.rjial.storybook.network.response.StoryListResponse
 import com.rjial.storybook.util.ResponseResult
 
@@ -26,8 +24,8 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityStoryMapBinding
     private lateinit var storyListViewModel: StoryListViewModel
-    private val listStory: ArrayList<ListStoryItem> = ArrayList<ListStoryItem>()
     private val boundsBuilder = LatLngBounds.builder()
+//    private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,15 +54,15 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         mMap = googleMap
         loadStoriesWithLoc() {
-            it.listStory.forEach {story ->
-                listStory.add(story)
-                if (story.lat != null && story.lon != null) {
-                    val latLng = LatLng(story.lat.toDouble(), story.lon.toDouble())
+            it.listStory.forEach { item ->
+                if (item.lat != null && item.lon != null) {
+                    val latLng = LatLng(item.lat.toDouble(), item.lon.toDouble())
                     mMap.addMarker(MarkerOptions()
                         .position(latLng)
-                        .title(story.name))
+                        .title(item.name))
                     boundsBuilder.include(latLng)
                 }
+
             }
             val bounds = boundsBuilder.build()
             mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(
@@ -74,6 +72,13 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
                 300
             ))
         }
+//        val bounds = boundsBuilder.build()
+//        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(
+//            bounds,
+//            resources.displayMetrics.widthPixels,
+//            resources.displayMetrics.heightPixels,
+//            300
+//        ))
 //        val bounds = boundsBuilder.build()
 //        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(
 //            bounds,
@@ -93,8 +98,18 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
 //        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(testingLoc, 15f))
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+//        coroutineScope.cancel()
+    }
+
     private fun loadStoriesWithLoc(callback: (res: StoryListResponse) -> Unit) {
-        storyListViewModel.getAllStories(true).observe(this) {
+//        StoryListInjection.provideInjection(application).getAllStoriesFlow(true).collect {
+//            it.map {item ->
+//                callback(item)
+//            }
+//        }
+        storyListViewModel.getAllStoriesNonPaging(true).observe(this) {
             if (it != null) {
                 when(it) {
                     is ResponseResult.Loading -> {}
