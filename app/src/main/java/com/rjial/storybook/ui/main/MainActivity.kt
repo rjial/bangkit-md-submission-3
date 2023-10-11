@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.rjial.storybook.R
 import com.rjial.storybook.data.preference.datastore
 import com.rjial.storybook.data.viewmodel.AppPreferencesViewModel
-import com.rjial.storybook.data.viewmodel.StoryImageDatabaseViewModel
 import com.rjial.storybook.data.viewmodel.StoryListViewModel
 import com.rjial.storybook.data.viewmodel.factory.AppPrefVMFactory
 import com.rjial.storybook.data.viewmodel.factory.StoryListVMFactory
@@ -19,19 +18,16 @@ import com.rjial.storybook.ui.authentication.login.LoginAuthActivity
 import com.rjial.storybook.ui.main.adapter.StoryListAdapter
 import com.rjial.storybook.ui.map.StoryMapActivity
 import com.rjial.storybook.ui.story.add.AddStoryActivity
-import com.rjial.storybook.util.factory.StoryImageDatabaseViewModelFactory
 import com.rjial.storybook.util.injection.StoryAuthAppPrefInjection
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var storyImageDatabaseViewModel: StoryImageDatabaseViewModel
     private lateinit var storyListViewModel: StoryListViewModel
     private lateinit var adapter: StoryListAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityMainBinding.inflate(layoutInflater)
         storyListViewModel = ViewModelProvider(this, StoryListVMFactory(application))[StoryListViewModel::class.java]
-        storyImageDatabaseViewModel = ViewModelProvider(this,  StoryImageDatabaseViewModelFactory(this))[StoryImageDatabaseViewModel::class.java]
-        adapter = StoryListAdapter(storyImageDatabaseViewModel)
+        adapter = StoryListAdapter()
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         val layoutManager = LinearLayoutManager(this)
