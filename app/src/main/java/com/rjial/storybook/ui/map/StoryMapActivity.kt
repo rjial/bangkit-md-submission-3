@@ -18,6 +18,7 @@ import com.rjial.storybook.data.viewmodel.factory.StoryListVMFactory
 import com.rjial.storybook.databinding.ActivityStoryMapBinding
 import com.rjial.storybook.network.response.StoryListResponse
 import com.rjial.storybook.util.ResponseResult
+import com.rjial.storybook.util.injection.StoryListInjection
 
 class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -32,7 +33,7 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         binding = ActivityStoryMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        storyListViewModel = ViewModelProvider(this, StoryListVMFactory(application))[StoryListViewModel::class.java]
+        storyListViewModel = ViewModelProvider(this, StoryListVMFactory(StoryListInjection.provideInjection(this)))[StoryListViewModel::class.java]
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager

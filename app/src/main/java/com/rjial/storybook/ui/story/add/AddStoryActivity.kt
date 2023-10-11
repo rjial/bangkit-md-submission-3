@@ -20,6 +20,7 @@ import com.rjial.storybook.data.viewmodel.factory.StoryListVMFactory
 import com.rjial.storybook.databinding.ActivityAddStoryBinding
 import com.rjial.storybook.util.ResponseResult
 import com.rjial.storybook.util.UriUtils
+import com.rjial.storybook.util.injection.StoryListInjection
 import com.rjial.storybook.util.reduceFileImage
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -41,7 +42,7 @@ class AddStoryActivity : AppCompatActivity() {
         binding.txtLocationAddStory.setOnClickListener {
             getMyLastLocation()
         }
-        storyViewModel = ViewModelProvider(this, StoryListVMFactory(application))[StoryListViewModel::class.java]
+        storyViewModel = ViewModelProvider(this, StoryListVMFactory(StoryListInjection.provideInjection(this)))[StoryListViewModel::class.java]
         binding.btnAddStoryImgGallery.setOnClickListener {
             startGallery()
         }

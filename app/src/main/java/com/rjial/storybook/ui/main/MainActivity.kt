@@ -19,6 +19,7 @@ import com.rjial.storybook.ui.main.adapter.StoryListAdapter
 import com.rjial.storybook.ui.map.StoryMapActivity
 import com.rjial.storybook.ui.story.add.AddStoryActivity
 import com.rjial.storybook.util.injection.StoryAuthAppPrefInjection
+import com.rjial.storybook.util.injection.StoryListInjection
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -26,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: StoryListAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityMainBinding.inflate(layoutInflater)
-        storyListViewModel = ViewModelProvider(this, StoryListVMFactory(application))[StoryListViewModel::class.java]
+        storyListViewModel = ViewModelProvider(this, StoryListVMFactory(StoryListInjection.provideInjection(this)))[StoryListViewModel::class.java]
         adapter = StoryListAdapter()
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
