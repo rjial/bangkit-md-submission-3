@@ -60,6 +60,9 @@ class StoryListAdapter(): PagingDataAdapter<ListStoryItem, StoryListAdapter.View
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(requireNotNull(getItem(position)))
+        val item = getItem(position)
+        if (item != null) {
+            holder.bind(item)
+        }
     }
 }
