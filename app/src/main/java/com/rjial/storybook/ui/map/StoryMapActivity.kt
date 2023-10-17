@@ -105,17 +105,23 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun loadStoriesWithLoc(callback: (res: StoryListResponse) -> Unit) {
+        var pageIndex = 1
 //        StoryListInjection.provideInjection(application).getAllStoriesFlow(true).collect {
 //            it.map {item ->
 //                callback(item)
 //            }
 //        }
-        storyListViewModel.getAllStoriesNonPaging(true).observe(this) {
+
+        storyListViewModel.storyList.observe(this) {
             if (it != null) {
                 when(it) {
                     is ResponseResult.Loading -> {}
                     is ResponseResult.Success -> {
                         callback(it.data)
+                        if (it.data.listStory.isNotEmpty()) {
+                            storyListViewModel.getAllStoriesNonPaging(true, pageIndex)
+                            pageIndex++
+                        }
                         Log.d("LIST_STORY", it.data.toString())
                     }
                     is ResponseResult.Error -> {
@@ -124,5 +130,6 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
         }
+        storyListViewModel.getAllStoriesNonPaging(true, pageIndex)
     }
 }
