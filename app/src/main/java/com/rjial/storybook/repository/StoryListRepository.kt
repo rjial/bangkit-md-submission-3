@@ -76,7 +76,7 @@ class StoryListRepository(
 //    }
 
     @OptIn(ExperimentalPagingApi::class)
-    fun getAllStoriesNew(withLoc: Boolean): LiveData<PagingData<ListStoryItem>> {
+    fun getAllStoriesPager(withLoc: Boolean): Pager<Int, ListStoryItem> {
         return Pager(
             config = PagingConfig(
                 pageSize = 10
@@ -86,18 +86,11 @@ class StoryListRepository(
                 database.storyListDao().getAllStories()
 //                StoryListPagingSource(apiService, withLoc)
             }
-        ).liveData
+        )
     }
 
     fun getAllStoriesFlow(withLoc: Boolean): Flow<PagingData<ListStoryItem>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = 10
-            ),
-            pagingSourceFactory = {
-                StoryListPagingSource(apiService, withLoc)
-            }
-        ).flow
+        return getAllStoriesPager(withLoc).flow
     }
 
 
