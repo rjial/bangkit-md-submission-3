@@ -24,7 +24,7 @@ class StoryListPagingSource(private val storyEndpoint: StoryEndpoint, private va
             val responseData = storyEndpoint.getAllStoriesSus(location = if (location) 1 else 0, page = position, size = params.loadSize)
 
             LoadResult.Page(
-                data = responseData.listStory,
+                data = responseData.listStory.sortedByDescending { item -> item.createdAt },
                 prevKey = if (position == INITIAL_PAGE_INDEX) null else position - 1,
                 nextKey = if (responseData.listStory.isNullOrEmpty()) null else position + 2
             )

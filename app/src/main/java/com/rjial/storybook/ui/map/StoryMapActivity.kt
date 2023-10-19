@@ -115,11 +115,11 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
         storyListViewModel.storyList.observe(this) {
             if (it != null) {
                 when(it) {
-                    is ResponseResult.Loading -> {}
+//                    is ResponseResult.Loading -> {}
                     is ResponseResult.Success -> {
                         callback(it.data)
                         if (it.data.listStory.isNotEmpty()) {
-                            storyListViewModel.getAllStoriesNonPaging(true, pageIndex)
+                            storyListViewModel.getAllStoriesSus(true, pageIndex)
                             pageIndex++
                         }
                         Log.d("LIST_STORY", it.data.toString())
@@ -127,9 +127,10 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
                     is ResponseResult.Error -> {
                         Toast.makeText(this@StoryMapActivity, it.error, Toast.LENGTH_SHORT).show()
                     }
+                    else -> {}
                 }
             }
         }
-        storyListViewModel.getAllStoriesNonPaging(true, pageIndex)
+        storyListViewModel.getAllStoriesSus(true, pageIndex)
     }
 }

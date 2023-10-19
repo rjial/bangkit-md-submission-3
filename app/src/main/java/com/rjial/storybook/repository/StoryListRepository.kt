@@ -42,27 +42,36 @@ class StoryListRepository(
         }
     }
 
-    fun getAllStories(withLoc: Boolean = false, page: Int? = 1, size: Int? = 10, storyList: MutableLiveData<ResponseResult<StoryListResponse>>) {
-        storyList.value = ResponseResult.Loading
-        apiService.getAllStories(location = if(withLoc) 1 else 0, page = page, size = size).enqueue(object: Callback<StoryListResponse> {
-            override fun onResponse(
-                call: Call<StoryListResponse>,
-                response: Response<StoryListResponse>
-            ) {
-                val body = response.body()
-                if(response.isSuccessful && body != null) {
-                    storyList.value = ResponseResult.Success(body)
-
-                } else {
-                    storyList.value = ResponseResult.Error("Failed to fetch stories")
-                }
-            }
-
-            override fun onFailure(call: Call<StoryListResponse>, t: Throwable) {
-                storyList.value = ResponseResult.Error("Failed to fetch stories: ${t.message}")
-            }
-        })
+    suspend fun getAllStoriesSus(withLoc: Boolean = false, page: Int? = 1, size: Int? = 10): ResponseResult<StoryListResponse> {
+        return try {
+            val response = apiService.getAllStoriesSus(if (withLoc) 1 else 0, page, size)
+            ResponseResult.Success(response)
+        } catch (e: Exception) {
+            ResponseResult.Error(e.message!!.toString())
+        }
     }
+
+//    fun getAllStories(withLoc: Boolean = false, page: Int? = 1, size: Int? = 10) {
+//        storyList.value = ResponseResult.Loading
+//        apiService.getAllStories(location = if(withLoc) 1 else 0, page = page, size = size).enqueue(object: Callback<StoryListResponse> {
+//            override fun onResponse(
+//                call: Call<StoryListResponse>,
+//                response: Response<StoryListResponse>
+//            ) {
+//                val body = response.body()
+//                if(response.isSuccessful && body != null) {
+//                    storyList.value = ResponseResult.Success(body)
+//
+//                } else {
+//                    storyList.value = ResponseResult.Error("Failed to fetch stories")
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<StoryListResponse>, t: Throwable) {
+//                storyList.value = ResponseResult.Error("Failed to fetch stories: ${t.message}")
+//            }
+//        })
+//    }
 
 //    private fun storyPager(withLoc: Boolean): Pager {
 //        return Pager(
@@ -88,12 +97,6 @@ class StoryListRepository(
             }
         )
     }
-
-    fun getAllStoriesFlow(withLoc: Boolean): Flow<PagingData<ListStoryItem>> {
-        return getAllStoriesPager(withLoc).flow
-    }
-
-
 
     fun uploadStory(photo: MultipartBody.Part, description: RequestBody, lat: RequestBody? = null, lon: RequestBody? = null): LiveData<ResponseResult<StoryAddResponse>>  {
         resultUpload.value = ResponseResult.Loading
