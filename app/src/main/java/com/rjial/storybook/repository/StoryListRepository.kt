@@ -9,13 +9,11 @@ import androidx.paging.PagingData
 import androidx.paging.liveData
 import com.rjial.storybook.data.database.database.StoryListDatabase
 import com.rjial.storybook.data.paging.mediator.StoryListRemoteMediator
-import com.rjial.storybook.data.paging.source.StoryListPagingSource
 import com.rjial.storybook.network.endpoint.StoryEndpoint
 import com.rjial.storybook.network.response.ListStoryItem
 import com.rjial.storybook.network.response.StoryAddResponse
 import com.rjial.storybook.network.response.StoryListResponse
 import com.rjial.storybook.util.ResponseResult
-import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.json.JSONObject
@@ -96,6 +94,20 @@ class StoryListRepository(
 //                StoryListPagingSource(apiService, withLoc)
             }
         )
+    }
+
+    @OptIn(ExperimentalPagingApi::class)
+    fun getAllStoriesPagerLV(withLoc: Boolean): LiveData<PagingData<ListStoryItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 10
+            ),
+            remoteMediator = StoryListRemoteMediator(database, apiService, withLoc),
+            pagingSourceFactory = {
+                database.storyListDao().getAllStories()
+//                StoryListPagingSource(apiService, withLoc)
+            }
+        ).liveData
     }
 
     fun uploadStory(photo: MultipartBody.Part, description: RequestBody, lat: RequestBody? = null, lon: RequestBody? = null): LiveData<ResponseResult<StoryAddResponse>>  {
