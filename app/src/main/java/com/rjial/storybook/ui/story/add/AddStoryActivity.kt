@@ -39,9 +39,14 @@ class AddStoryActivity : AppCompatActivity() {
         setContentView(binding.root)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         getMyLastLocation()
-        binding.txtLocationAddStory.setOnClickListener {
-            getMyLastLocation()
+        binding.swToggleLocAddStory.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                getMyLastLocation()
+            }
         }
+//        binding.txtLocationAddStory.setOnClickListener {
+//            getMyLastLocation()
+//        }
         storyViewModel = ViewModelProvider(this, StoryListVMFactory(StoryListInjection.provideInjection(this)))[StoryListViewModel::class.java]
         binding.btnAddStoryImgGallery.setOnClickListener {
             startGallery()
@@ -55,8 +60,8 @@ class AddStoryActivity : AppCompatActivity() {
                 val description = binding.edtAddStoryDesc.text.toString()
 
                 val requestBody = description.toRequestBody("text/plain".toMediaType())
-                val latRb = if (::myLatLong.isInitialized) myLatLong.latitude.toString().toRequestBody("text/plain".toMediaType()) else null
-                val lonRb = if (::myLatLong.isInitialized) myLatLong.longitude.toString().toRequestBody("text/plain".toMediaType()) else null
+                val latRb = if (binding.swToggleLocAddStory.isChecked) myLatLong.latitude.toString().toRequestBody("text/plain".toMediaType()) else null
+                val lonRb = if (binding.swToggleLocAddStory.isChecked) myLatLong.longitude.toString().toRequestBody("text/plain".toMediaType()) else null
                 val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
                 val multipartBody = MultipartBody.Part.createFormData(
                     "photo",
@@ -154,7 +159,7 @@ class AddStoryActivity : AppCompatActivity() {
                     getMyLastLocation()
                 }
                 else -> {
-                    binding.txtLocationAddStory.text = "Location permission not granted"
+                    Toast.makeText(this@AddStoryActivity, "Location permission not granted", Toast.LENGTH_SHORT).show()
                     // No location access granted.
                 }
             }
@@ -167,10 +172,12 @@ class AddStoryActivity : AppCompatActivity() {
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                 if (location != null) {
                     myLatLong = LatLng(location.latitude, location.longitude)
-                    binding.txtLocationAddStory.text = getString(R.string.location, location.latitude.toString(), location.longitude.toString())
+                    binding.swToggleLocAddStory.isChecked = true
+//                    binding.txtLocationAddStory.text = getString(R.string.location, location.latitude.toString(), location.longitude.toString())
 //                    showStartMarker(location)
                 } else {
-                    binding.txtLocationAddStory.text = "Location is not found. Try Again"
+//                    binding.txtLocationAddStory.text = "Location is not found. Try Again"
+                    binding.swToggleLocAddStory.isChecked = false
                     Toast.makeText(
                         this@AddStoryActivity,
                         "Location is not found. Try Again",
