@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rjial.storybook.R
@@ -82,6 +84,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadStories() {
+        adapter.loadStateFlow.asLiveData().observe(this) { loadState ->
+            val isLoading = loadState.refresh is LoadState.Loading
+            loadingFunc(isLoading)
+        }
         val load = storyListViewModel.getAllStories()
         if (load.hasActiveObservers()) {
             load.removeObservers(this)
