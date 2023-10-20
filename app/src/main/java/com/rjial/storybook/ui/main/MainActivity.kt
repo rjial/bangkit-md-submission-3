@@ -114,21 +114,6 @@ class MainActivity : AppCompatActivity() {
         }
         load.observe(this) {
             adapter.submitData(lifecycle, it)
-//            if (it != null) {
-//                when (it) {
-//                    is ResponseResult.Loading -> loadingFunc(true)
-//                    is ResponseResult.Success -> {
-//                        loadingFunc(false)
-//                        adapter.submitList(it.data.listStory.sortedByDescending { item -> item.createdAt })
-//                    }
-//                    is ResponseResult.Error -> {
-//                        loadingFunc(false)
-//                        Toast.makeText(this@MainActivity, it.error, Toast.LENGTH_SHORT).show()
-//                    }
-//                }
-//            } else {
-//                Toast.makeText(this@MainActivity, "Failed to fetch data", Toast.LENGTH_SHORT).show()
-//            }
         }
     }
 }

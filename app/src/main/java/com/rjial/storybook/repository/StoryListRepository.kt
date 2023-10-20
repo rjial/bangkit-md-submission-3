@@ -1,12 +1,12 @@
 package com.rjial.storybook.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
+import com.google.gson.Gson
 import com.rjial.storybook.data.database.database.StoryListDatabase
 import com.rjial.storybook.data.paging.mediator.StoryListRemoteMediator
 import com.rjial.storybook.network.endpoint.StoryEndpoint
@@ -16,17 +16,12 @@ import com.rjial.storybook.network.response.StoryListResponse
 import com.rjial.storybook.util.ResponseResult
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import org.json.JSONObject
-import org.json.JSONTokener
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import retrofit2.HttpException
 
 class StoryListRepository(
     private val apiService: StoryEndpoint,
     private val database: StoryListDatabase
 ) {
-    private val resultUpload = MutableLiveData<ResponseResult<StoryAddResponse>>()
 
     companion object {
         @Volatile
@@ -83,20 +78,6 @@ class StoryListRepository(
 //    }
 
     @OptIn(ExperimentalPagingApi::class)
-    fun getAllStoriesPager(withLoc: Boolean): Pager<Int, ListStoryItem> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = 10
-            ),
-            remoteMediator = StoryListRemoteMediator(database, apiService, withLoc),
-            pagingSourceFactory = {
-                database.storyListDao().getAllStories()
-//                StoryListPagingSource(apiService, withLoc)
-            }
-        )
-    }
-
-    @OptIn(ExperimentalPagingApi::class)
     fun getAllStoriesPagerLV(withLoc: Boolean): LiveData<PagingData<ListStoryItem>> {
         return Pager(
             config = PagingConfig(
@@ -110,32 +91,48 @@ class StoryListRepository(
         ).liveData
     }
 
-    fun uploadStory(photo: MultipartBody.Part, description: RequestBody, lat: RequestBody? = null, lon: RequestBody? = null): LiveData<ResponseResult<StoryAddResponse>>  {
-        resultUpload.value = ResponseResult.Loading
-        try {
-            val upload = apiService.uploadImage(photo, description, lat, lon)
-            upload.enqueue(object : Callback<StoryAddResponse> {
-                override fun onResponse(
-                    call: Call<StoryAddResponse>,
-                    response: Response<StoryAddResponse>
-                ) {
-                    val body = response.body()
-                    if (response.isSuccessful && body != null) {
-                        resultUpload.value = ResponseResult.Success(body)
-                    } else {
-                        val errorRes = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
-                        resultUpload.value = ResponseResult.Error("Failed to upload story : ${errorRes.getString("message")}")
-                    }
-                }
+//    fun uploadStory(photo: MultipartBody.Part, description: RequestBody, lat: RequestBody? = null, lon: RequestBody? = null): LiveData<ResponseResult<StoryAddResponse>>  {
+//        resultUpload.value = ResponseResult.Loading
+//        try {
+//            val upload = apiService.uploadImage(photo, description, lat, lon)
+//            upload.enqueue(object : Callback<StoryAddResponse> {
+//                override fun onResponse(
+//                    call: Call<StoryAddResponse>,
+//                    response: Response<StoryAddResponse>
+//                ) {
+//                    val body = response.body()
+//                    if (response.isSuccessful && body != null) {
+//                        resultUpload.value = ResponseResult.Success(body)
+//                    } else {
+//                        val errorRes = JSONTokener(response.errorBody()!!.string()).nextValue() as JSONObject
+//                        resultUpload.value = ResponseResult.Error("Failed to upload story : ${errorRes.getString("message")}")
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<StoryAddResponse>, t: Throwable) {
+//                    resultUpload.value = ResponseResult.Error("Failed to upload story : ${t.message}")
+//                }
+//
+//            })
+//        } catch(exc: Exception) {
+//            resultUpload.value = ResponseResult.Error("Failed to upload story : ${exc.message}")
+//        }
+//        return resultUpload
+//    }
+    suspend fun uploadStorySus(photo: MultipartBody.Part, description: RequestBody, lat: RequestBody? = null, lon: RequestBody? = null): ResponseResult<StoryAddResponse>  {
 
-                override fun onFailure(call: Call<StoryAddResponse>, t: Throwable) {
-                    resultUpload.value = ResponseResult.Error("Failed to upload story : ${t.message}")
-                }
-
-            })
-        } catch(exc: Exception) {
-            resultUpload.value = ResponseResult.Error("Failed to upload story : ${exc.message}")
+        return try {
+            val uploadStoryRes = apiService.uploadStorySus(photo, description, lat, lon)
+            if (uploadStoryRes.error) {
+                ResponseResult.Error(uploadStoryRes.message)
+            }
+            ResponseResult.Success(uploadStoryRes)
+        }catch(exc: HttpException) {
+            val errorBody = Gson().fromJson(exc.response()?.errorBody()?.string(), StoryAddResponse::class.java)
+            ResponseResult.Error(errorBody.message)
+        } catch (exc: Exception) {
+            ResponseResult.Error(exc.message!!)
         }
-        return resultUpload
+
     }
 }

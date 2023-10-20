@@ -44,9 +44,6 @@ class AddStoryActivity : AppCompatActivity() {
                 getMyLastLocation()
             }
         }
-//        binding.txtLocationAddStory.setOnClickListener {
-//            getMyLastLocation()
-//        }
         storyViewModel = ViewModelProvider(this, StoryListVMFactory(StoryListInjection.provideInjection(this)))[StoryListViewModel::class.java]
         binding.btnAddStoryImgGallery.setOnClickListener {
             startGallery()
@@ -68,25 +65,25 @@ class AddStoryActivity : AppCompatActivity() {
                     imageFile.name,
                     requestImageFile
                 )
-                val uploadStory = storyViewModel.uploadStory(multipartBody, requestBody, latRb, lonRb)
-                uploadStory.observe(this@AddStoryActivity) {
+                storyViewModel.uploadRes.observe(this@AddStoryActivity) {
                     if (it != null) {
                         when(it) {
-                            is ResponseResult.Loading -> loadingFunc(true)
                             is ResponseResult.Success -> {
                                 loadingFunc(false)
-                                uploadStory.removeObservers(this@AddStoryActivity)
+                                storyViewModel.uploadRes.removeObservers(this@AddStoryActivity)
                                 finish()
                             }
                             is ResponseResult.Error -> {
                                 loadingFunc(false)
-                                uploadStory.removeObservers(this@AddStoryActivity)
                                 Toast.makeText(this@AddStoryActivity, it.error, Toast.LENGTH_SHORT)
                                     .show()
+                                storyViewModel.uploadRes.removeObservers(this@AddStoryActivity)
                             }
+                            else -> loadingFunc(true)
                         }
                     }
                 }
+                storyViewModel.uploadStorySus(multipartBody, requestBody, latRb, lonRb)
             } else {
                 Toast.makeText(this, "Select image first!", Toast.LENGTH_SHORT).show()
             }
@@ -173,10 +170,7 @@ class AddStoryActivity : AppCompatActivity() {
                 if (location != null) {
                     myLatLong = LatLng(location.latitude, location.longitude)
                     binding.swToggleLocAddStory.isChecked = true
-//                    binding.txtLocationAddStory.text = getString(R.string.location, location.latitude.toString(), location.longitude.toString())
-//                    showStartMarker(location)
                 } else {
-//                    binding.txtLocationAddStory.text = "Location is not found. Try Again"
                     binding.swToggleLocAddStory.isChecked = false
                     Toast.makeText(
                         this@AddStoryActivity,

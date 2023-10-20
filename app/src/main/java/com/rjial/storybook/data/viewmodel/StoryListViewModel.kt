@@ -19,6 +19,9 @@ class StoryListViewModel(private val storyListRepository: StoryListRepository): 
     private val _storyList: MutableLiveData<ResponseResult<StoryListResponse>> =
         MutableLiveData<ResponseResult<StoryListResponse>>()
     var storyList: LiveData<ResponseResult<StoryListResponse>> = _storyList
+    private val _uploadRes: MutableLiveData<ResponseResult<StoryAddResponse>> =
+        MutableLiveData<ResponseResult<StoryAddResponse>>()
+    var uploadRes: LiveData<ResponseResult<StoryAddResponse>> = _uploadRes
     fun getAllStoriesSus(withLoc: Boolean, page: Int? = 1, size: Int? = 10) {
         viewModelScope.launch {
             val storiesSus = kotlin.runCatching { storyListRepository.getAllStoriesSus(withLoc, page, size) }
@@ -29,6 +32,12 @@ class StoryListViewModel(private val storyListRepository: StoryListRepository): 
     }
 
     fun getAllStories(withLoc: Boolean = false): LiveData<PagingData<ListStoryItem>> = storyListRepository.getAllStoriesPagerLV(withLoc).cachedIn(viewModelScope)
-
-    fun uploadStory(photo: MultipartBody.Part, description: RequestBody, lat: RequestBody? = null, lon: RequestBody? = null): LiveData<ResponseResult<StoryAddResponse>> = storyListRepository.uploadStory(photo, description, lat, lon)
+    fun uploadStorySus(photo: MultipartBody.Part, description: RequestBody, lat: RequestBody? = null, lon: RequestBody? = null) {
+        viewModelScope.launch {
+            val uploadStoryRes = kotlin.runCatching { storyListRepository.uploadStorySus(photo, description, lat, lon) }
+            uploadStoryRes.onSuccess {
+                _uploadRes.value = it
+            }
+        }
+    }
 }
