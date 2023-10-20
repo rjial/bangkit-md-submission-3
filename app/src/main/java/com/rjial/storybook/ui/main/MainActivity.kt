@@ -4,8 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,11 +23,14 @@ import com.rjial.storybook.ui.map.StoryMapActivity
 import com.rjial.storybook.ui.story.add.AddStoryActivity
 import com.rjial.storybook.util.injection.StoryAuthAppPrefInjection
 import com.rjial.storybook.util.injection.StoryListInjection
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var storyListViewModel: StoryListViewModel
     private lateinit var adapter: StoryListAdapter
+    private var firstLoad: Boolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityMainBinding.inflate(layoutInflater)
         storyListViewModel = ViewModelProvider(this, StoryListVMFactory(StoryListInjection.provideInjection(this)))[StoryListViewModel::class.java]
@@ -66,16 +70,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadingFunc(loading: Boolean) {
-        when(loading) {
-            true -> {
-                binding.pbStoryLoading.visibility = View.VISIBLE
-                binding.rcvStory.visibility = View.GONE
+//        if (!firstLoad) {
+            when(loading) {
+                true -> {
+                    binding.pbStoryLoading.visibility = View.VISIBLE
+                    binding.rcvStory.visibility = View.GONE
+                }
+                false -> {
+                    binding.pbStoryLoading.visibility = View.GONE
+                    binding.rcvStory.visibility = View.VISIBLE
+                }
             }
-            false -> {
-                binding.pbStoryLoading.visibility = View.GONE
-                binding.rcvStory.visibility = View.VISIBLE
-            }
-        }
+//            firstLoad = !firstLoad
+//        }
     }
 
     override fun onResume() {
@@ -84,9 +91,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadStories() {
-        adapter.loadStateFlow.asLiveData().observe(this) { loadState ->
-            val isLoading = loadState.refresh is LoadState.Loading
-            loadingFunc(isLoading)
+        lifecycleScope.launch {
+            adapter.loadStateFlow.collectLatest {loadState ->
+                when(loadState.source.refresh) {
+                    is LoadState.Error -> {
+                        Toast.makeText(this@MainActivity, (loadState.source.refresh as LoadState.Error).error.message, Toast.LENGTH_SHORT).show()
+                        loadingFunc(false)
+                    }
+                    LoadState.Loading -> {
+                        if (firstLoad) loadingFunc(true)
+                    }
+                    is LoadState.NotLoading -> {
+                        loadingFunc(false)
+                        firstLoad = false
+                    }
+                }
+            }
         }
         val load = storyListViewModel.getAllStories()
         if (load.hasActiveObservers()) {
