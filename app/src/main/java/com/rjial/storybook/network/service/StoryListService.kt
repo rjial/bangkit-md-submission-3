@@ -27,8 +27,9 @@ class StoryListService {
         }
 
     }
+    var API_URL = "https://story-api.dicoding.dev/v1/"
 
-    fun getService(token: String, baseUrl: String = "https://story-api.dicoding.dev/v1/"): StoryEndpoint {
+    fun getService(token: String): StoryEndpoint {
         val loggingInterceptor =
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         val authInterceptor = Interceptor {
@@ -43,7 +44,7 @@ class StoryListService {
             .addInterceptor(authInterceptor)
             .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl(baseUrl)
+            .baseUrl(API_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
