@@ -1,5 +1,6 @@
 package com.rjial.storybook.network.service
 
+import com.rjial.storybook.BuildConfig
 import com.rjial.storybook.network.endpoint.StoryEndpoint
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -27,7 +28,7 @@ class StoryListService {
 
     }
 
-    fun getService(token: String): StoryEndpoint {
+    fun getService(token: String, baseUrl: String = "https://story-api.dicoding.dev/v1/"): StoryEndpoint {
         val loggingInterceptor =
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         val authInterceptor = Interceptor {
@@ -42,7 +43,7 @@ class StoryListService {
             .addInterceptor(authInterceptor)
             .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://story-api.dicoding.dev/v1/")
+            .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
