@@ -6,7 +6,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
-import com.google.gson.Gson
 import com.rjial.storybook.data.database.database.StoryListDatabase
 import com.rjial.storybook.data.paging.mediator.StoryListRemoteMediator
 import com.rjial.storybook.network.endpoint.StoryEndpoint
@@ -16,7 +15,6 @@ import com.rjial.storybook.network.response.StoryListResponse
 import com.rjial.storybook.util.ResponseResult
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.HttpException
 
 class StoryListRepository(
     private val apiService: StoryEndpoint,
@@ -119,20 +117,11 @@ class StoryListRepository(
 //        }
 //        return resultUpload
 //    }
-    suspend fun uploadStorySus(photo: MultipartBody.Part, description: RequestBody, lat: RequestBody? = null, lon: RequestBody? = null): ResponseResult<StoryAddResponse>  {
-
-        return try {
-            val uploadStoryRes = apiService.uploadStorySus(photo, description, lat, lon)
-            if (uploadStoryRes.error) {
-                ResponseResult.Error(uploadStoryRes.message)
-            }
-            ResponseResult.Success(uploadStoryRes)
-        }catch(exc: HttpException) {
-            val errorBody = Gson().fromJson(exc.response()?.errorBody()?.string(), StoryAddResponse::class.java)
-            ResponseResult.Error(errorBody.message)
-        } catch (exc: Exception) {
-            ResponseResult.Error(exc.message!!)
+    suspend fun uploadStorySus(photo: MultipartBody.Part, description: RequestBody, lat: RequestBody? = null, lon: RequestBody? = null): Result<StoryAddResponse>  {
+        val uploadStoryRes = kotlin.runCatching { apiService.uploadStorySus(photo, description, lat, lon) }
+        uploadStoryRes.onFailure {
+            return Result.failure(it)
         }
-
+        return uploadStoryRes
     }
 }

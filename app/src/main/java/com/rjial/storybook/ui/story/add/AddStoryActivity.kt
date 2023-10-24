@@ -11,30 +11,37 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
+import com.google.gson.Gson
 import com.rjial.storybook.R
 import com.rjial.storybook.data.viewmodel.StoryListViewModel
 import com.rjial.storybook.data.viewmodel.factory.StoryListVMFactory
 import com.rjial.storybook.databinding.ActivityAddStoryBinding
-import com.rjial.storybook.util.ResponseResult
+import com.rjial.storybook.network.response.StoryAddResponse
+import com.rjial.storybook.repository.StoryListRepository
 import com.rjial.storybook.util.UriUtils
 import com.rjial.storybook.util.injection.StoryListInjection
 import com.rjial.storybook.util.reduceFileImage
+import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import retrofit2.HttpException
 
 class AddStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddStoryBinding
     private lateinit var storyViewModel: StoryListViewModel
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var storyListRepository: StoryListRepository
     private var currentImageUri: Uri? = null
     private lateinit var myLatLong: LatLng
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityAddStoryBinding.inflate(layoutInflater)
+        storyListRepository = StoryListInjection.provideInjection(this)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -44,7 +51,7 @@ class AddStoryActivity : AppCompatActivity() {
                 getMyLastLocation()
             }
         }
-        storyViewModel = ViewModelProvider(this, StoryListVMFactory(StoryListInjection.provideInjection(this)))[StoryListViewModel::class.java]
+        storyViewModel = ViewModelProvider(this, StoryListVMFactory(storyListRepository))[StoryListViewModel::class.java]
         binding.btnAddStoryImgGallery.setOnClickListener {
             startGallery()
         }
@@ -65,25 +72,46 @@ class AddStoryActivity : AppCompatActivity() {
                     imageFile.name,
                     requestImageFile
                 )
-                storyViewModel.uploadRes.observe(this@AddStoryActivity) {
-                    if (it != null) {
+                lifecycleScope.launch {
+                    loadingFunc(true)
+                    val uploadStoryRes = storyListRepository.uploadStorySus(multipartBody, requestBody, latRb, lonRb)
+                    uploadStoryRes.onSuccess {
+                        loadingFunc(false)
+                        finish()
+                    }.onFailure {
                         when(it) {
-                            is ResponseResult.Success -> {
-                                loadingFunc(false)
-                                storyViewModel.uploadRes.removeObservers(this@AddStoryActivity)
-                                finish()
-                            }
-                            is ResponseResult.Error -> {
-                                loadingFunc(false)
-                                Toast.makeText(this@AddStoryActivity, it.error, Toast.LENGTH_SHORT)
+                            is HttpException -> {
+                                val errorBody = Gson().fromJson(it.response()?.errorBody()?.string(), StoryAddResponse::class.java)
+                                Toast.makeText(this@AddStoryActivity, errorBody.message, Toast.LENGTH_SHORT)
                                     .show()
-                                storyViewModel.uploadRes.removeObservers(this@AddStoryActivity)
                             }
-                            else -> loadingFunc(true)
+                            is Exception -> {
+                                Toast.makeText(this@AddStoryActivity, it.message, Toast.LENGTH_SHORT)
+                                    .show()
+                            }
                         }
+                        loadingFunc(false)
                     }
                 }
-                storyViewModel.uploadStorySus(multipartBody, requestBody, latRb, lonRb)
+//                storyViewModel.uploadRes.observe(this@AddStoryActivity) {
+//                    if (it != null) {
+//                        when(it) {
+//                            is ResponseResult.Success -> {
+//                                loadingFunc(false)
+//                                storyViewModel.uploadRes.removeObservers(this@AddStoryActivity)
+//                                finish()
+//                            }
+//                            is ResponseResult.Error -> {
+//                                loadingFunc(false)
+//                                Toast.makeText(this@AddStoryActivity, it.error, Toast.LENGTH_SHORT)
+//                                    .show()
+//                                storyViewModel.uploadRes.removeObservers(this@AddStoryActivity)
+//                            }
+//                            else -> loadingFunc(true)
+//                        }
+//                    }
+//                }
+//                storyViewModel.uploadStory(multipartBody, requestBody, latRb, lonRb)
             } else {
                 Toast.makeText(this, "Select image first!", Toast.LENGTH_SHORT).show()
             }

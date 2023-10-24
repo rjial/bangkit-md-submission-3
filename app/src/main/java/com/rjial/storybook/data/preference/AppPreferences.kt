@@ -53,6 +53,13 @@ class AppPreferences private constructor(private val dataStore: DataStore<Prefer
         }
     }
 
+    suspend fun deleteAuth() {
+        dataStore.edit {
+            it.remove(tokenAuth)
+            it.remove(userAuth)
+        }
+    }
+
     fun isAuthorized(): Flow<Boolean> {
         return dataStore.data.map {
             if (it[tokenAuth] != null) {

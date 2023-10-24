@@ -54,6 +54,7 @@ class MainActivity : AppCompatActivity() {
                         StoryAuthAppPrefInjection.provideRepository(application.datastore))
                     )[AppPreferencesViewModel::class.java]
                     viewModel.doLogout()
+                    StoryListInjection.stopApiInstance()
                     finish()
                     val intent = Intent(this@MainActivity, LoginAuthActivity::class.java)
                     startActivity(intent)

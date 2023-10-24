@@ -27,8 +27,7 @@ class AppPreferencesViewModel(private val repository: StoryAuthAppPrefRepository
 
     fun doLogout() {
         viewModelScope.launch {
-            repository.purgeUser()
-            repository.purgeToken()
+            repository.purgeAuth()
         }
     }
 

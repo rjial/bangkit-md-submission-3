@@ -32,12 +32,15 @@ class StoryListViewModel(private val storyListRepository: StoryListRepository): 
     }
 
     fun getAllStories(withLoc: Boolean = false): LiveData<PagingData<ListStoryItem>> = storyListRepository.getAllStoriesPagerLV(withLoc).cachedIn(viewModelScope)
-    fun uploadStorySus(photo: MultipartBody.Part, description: RequestBody, lat: RequestBody? = null, lon: RequestBody? = null) {
-        viewModelScope.launch {
-            val uploadStoryRes = kotlin.runCatching { storyListRepository.uploadStorySus(photo, description, lat, lon) }
-            uploadStoryRes.onSuccess {
-                _uploadRes.value = it
-            }
-        }
+//    fun uploadStory(photo: MultipartBody.Part, description: RequestBody, lat: RequestBody? = null, lon: RequestBody? = null) {
+//        viewModelScope.launch {
+//            val uploadStoryRes = kotlin.runCatching { storyListRepository.uploadStorySus(photo, description, lat, lon) }
+//            uploadStoryRes.onSuccess {
+//                _uploadRes.value = it
+//            }
+//        }
+//    }
+    suspend fun uploadStorySus(photo: MultipartBody.Part, description: RequestBody, lat: RequestBody? = null, lon: RequestBody? = null): Result<StoryAddResponse> {
+        return storyListRepository.uploadStorySus(photo, description, lat, lon)
     }
 }

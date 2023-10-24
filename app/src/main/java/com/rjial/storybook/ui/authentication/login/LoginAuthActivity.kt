@@ -27,6 +27,7 @@ class LoginAuthActivity : AppCompatActivity() {
         binding = ActivityLoginAuthBinding.inflate(layoutInflater)
         appPreferenceViewModel = ViewModelProvider(this, AppPrefVMFactory.getInstance(StoryAuthAppPrefInjection.provideRepository(application.datastore)))[AppPreferencesViewModel::class.java]
 
+
 //        val loginObserver: Observer<ResponseResult<StoryAuthLoginResponse?>> = Observer {
 //            when(it) {
 //                is ResponseResult.Success -> {

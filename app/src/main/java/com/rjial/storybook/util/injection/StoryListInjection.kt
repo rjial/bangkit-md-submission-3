@@ -14,9 +14,13 @@ object StoryListInjection {
         val datastore = context.datastore
         val pref = AppPreferences.getInstance(datastore)
         val token = runBlocking { pref.getTokenAuth().first() }
-        val apiService = StoryListService.getInstance().getService(token)
+        val apiInstance = StoryListService.getInstance()
+        val apiService = apiInstance.getService(token)
         val database = StoryListDatabase.getInstance(context)
         return StoryListRepository.getInstance(apiService, database)
+    }
+    fun stopApiInstance() {
+        StoryListService.stopInstance()
     }
 
 }

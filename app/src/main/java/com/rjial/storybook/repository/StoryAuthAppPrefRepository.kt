@@ -32,10 +32,7 @@ class StoryAuthAppPrefRepository(
         return pref.isAuthorized()
     }
 
-    suspend fun purgeToken() {
-        return pref.setTokenAuth("")
-    }
-    suspend fun purgeUser() {
-        return pref.setUserAuth("")
+    suspend fun purgeAuth() {
+        return pref.deleteAuth()
     }
 }
