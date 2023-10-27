@@ -10,6 +10,7 @@ import com.rjial.storybook.network.response.ListStoryItem
 import com.rjial.storybook.network.response.StoryAddResponse
 import com.rjial.storybook.network.response.StoryListResponse
 import com.rjial.storybook.repository.StoryListRepository
+import com.rjial.storybook.util.EspressoIdlingResource
 import com.rjial.storybook.util.ResponseResult
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
@@ -23,10 +24,12 @@ class StoryListViewModel(private val storyListRepository: StoryListRepository): 
         MutableLiveData<ResponseResult<StoryAddResponse>>()
     var uploadRes: LiveData<ResponseResult<StoryAddResponse>> = _uploadRes
     fun getAllStoriesSus(withLoc: Boolean, page: Int? = 1, size: Int? = 10) {
+        EspressoIdlingResource.increment()
         viewModelScope.launch {
             val storiesSus = kotlin.runCatching { storyListRepository.getAllStoriesSus(withLoc, page, size) }
             storiesSus.onSuccess {
                 _storyList.value = it
+                EspressoIdlingResource.decrement()
             }
         }
     }

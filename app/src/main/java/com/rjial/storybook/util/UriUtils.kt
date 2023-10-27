@@ -60,7 +60,16 @@ fun rotateImage(source: Bitmap, angle: Float): Bitmap? {
 
 class UriUtils {
     private val FILENAME_FORMAT = "yyyyMMdd_HHmmss"
-    private val timeStamp: String = SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(Date())
+    private var timeStamp: String = SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(Date())
+
+    constructor() {
+        val FILENAME_FORMAT = "yyyyMMdd_HHmmss"
+        timeStamp = SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(Date())
+
+    }
+    constructor(customString: String) {
+        timeStamp = customString
+    }
 
     fun getImageUri(context: Context): Uri {
         var uri: Uri? = null

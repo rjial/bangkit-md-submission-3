@@ -74,6 +74,8 @@ dependencies {
     implementation("androidx.paging:paging-runtime-ktx:3.2.1")
     implementation("androidx.room:room-paging:2.6.0-rc01")
     implementation("androidx.test:core-ktx:1.5.0")
+    implementation("androidx.test.espresso:espresso-idling-resource:3.5.1")
+//    implementation("androidx.test.espresso:espresso-contrib:3.5.1")
     testImplementation("junit:junit:4.12")
     testImplementation("junit:junit:4.12")
     testImplementation("org.testng:testng:6.9.6")
@@ -89,8 +91,17 @@ dependencies {
     testImplementation("androidx.paging:paging-testing:3.2.1")
     androidTestImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test:core:1.3.0")
+    androidTestImplementation("androidx.test:runner:1.3.0")
+    androidTestImplementation("androidx.test:rules:1.3.0")
+    androidTestImplementation("androidx.test.ext:truth:1.3.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3") //TestDispatcher
     androidTestImplementation("androidx.arch.core:core-testing:2.2.0") // InstantTaskExecutorRule
     androidTestImplementation("com.squareup.okhttp3:mockwebserver:4.11.0")
+    androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.1")
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.5.1")
+    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
+//    androidTestImplementation("org.mockito:mockito-core:3.12.4")
+//    androidTestImplementation("org.mockito:mockito-android:3.12.4")
 }

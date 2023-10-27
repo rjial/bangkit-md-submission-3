@@ -11,6 +11,7 @@ import com.rjial.storybook.network.response.StoryAuthRegisterBody
 import com.rjial.storybook.network.response.StoryAuthRegisterResponse
 import com.rjial.storybook.network.service.StoryAuthService
 import com.rjial.storybook.repository.StoryAuthAppPrefRepository
+import com.rjial.storybook.util.wrapEspressoIdlingResource
 import kotlinx.coroutines.launch
 
 class AppPreferencesViewModel(private val repository: StoryAuthAppPrefRepository): ViewModel() {
@@ -32,21 +33,25 @@ class AppPreferencesViewModel(private val repository: StoryAuthAppPrefRepository
     }
 
     suspend fun doLoginSus(email: String, password: String): Result<StoryAuthLoginResponse> {
-        val loginRes = kotlin.runCatching { authService.loginFuncSus(StoryAuthLoginBody(email, password)) }
-        loginRes.onSuccess {
-            setTokenAuth(it.loginResult?.token!!)
-        }.onFailure {
-            return Result.failure(it)
+        wrapEspressoIdlingResource {
+            val loginRes = kotlin.runCatching { authService.loginFuncSus(StoryAuthLoginBody(email, password)) }
+            loginRes.onSuccess {
+                setTokenAuth(it.loginResult?.token!!)
+            }.onFailure {
+                return Result.failure(it)
+            }
+            return loginRes
         }
-        return loginRes
     }
 
     suspend fun doRegisterSus(email: String,name: String, password: String): Result<StoryAuthRegisterResponse> {
-        val registerRes = kotlin.runCatching { authService.registerFuncSus(StoryAuthRegisterBody(name, email, password)) }
-        registerRes.onFailure {
-            return Result.failure(it)
+        wrapEspressoIdlingResource {
+            val registerRes = kotlin.runCatching { authService.registerFuncSus(StoryAuthRegisterBody(name, email, password)) }
+            registerRes.onFailure {
+                return Result.failure(it)
+            }
+            return registerRes
         }
-        return registerRes
     }
 
     fun isAuthorized(): LiveData<Boolean> {

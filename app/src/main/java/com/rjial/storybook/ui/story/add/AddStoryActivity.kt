@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.test.espresso.IdlingRegistry
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
@@ -22,6 +23,7 @@ import com.rjial.storybook.data.viewmodel.factory.StoryListVMFactory
 import com.rjial.storybook.databinding.ActivityAddStoryBinding
 import com.rjial.storybook.network.response.StoryAddResponse
 import com.rjial.storybook.repository.StoryListRepository
+import com.rjial.storybook.util.EspressoIdlingResource
 import com.rjial.storybook.util.UriUtils
 import com.rjial.storybook.util.injection.StoryListInjection
 import com.rjial.storybook.util.reduceFileImage
@@ -32,7 +34,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
 
-class AddStoryActivity : AppCompatActivity() {
+class AddStoryActivity() : AppCompatActivity() {
     private lateinit var binding: ActivityAddStoryBinding
     private lateinit var storyViewModel: StoryListViewModel
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -59,6 +61,7 @@ class AddStoryActivity : AppCompatActivity() {
             startCamera()
         }
         binding.btnUploadAddStory.setOnClickListener {
+            EspressoIdlingResource.increment()
             if (currentImageUri != null) {
                 val imageFile = UriUtils().uriToFile(currentImageUri!!, this@AddStoryActivity).reduceFileImage()
                 val description = binding.edtAddStoryDesc.text.toString()
@@ -76,6 +79,7 @@ class AddStoryActivity : AppCompatActivity() {
                     loadingFunc(true)
                     val uploadStoryRes = storyListRepository.uploadStorySus(multipartBody, requestBody, latRb, lonRb)
                     uploadStoryRes.onSuccess {
+                        EspressoIdlingResource.decrement()
                         loadingFunc(false)
                         finish()
                     }.onFailure {
@@ -141,7 +145,7 @@ class AddStoryActivity : AppCompatActivity() {
         launcherIntentCamera.launch(currentImageUri)
     }
 
-    private val launcherIntentCamera = registerForActivityResult(ActivityResultContracts.TakePicture()) {
+    private var launcherIntentCamera = registerForActivityResult(ActivityResultContracts.TakePicture()) {
         if (it) {
             showImage()
         }

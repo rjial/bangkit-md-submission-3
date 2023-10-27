@@ -10,6 +10,7 @@ import com.rjial.storybook.data.database.dao.StoryListRemoteKeysDao
 import com.rjial.storybook.data.database.entity.StoryImageEntity
 import com.rjial.storybook.data.database.entity.StoryListRemoteKeys
 import com.rjial.storybook.network.response.ListStoryItem
+import com.rjial.storybook.util.IsRunningTest
 
 @Database(entities = [StoryImageEntity::class, ListStoryItem::class, StoryListRemoteKeys::class], version = 2)
 abstract class StoryListDatabase: RoomDatabase() {
@@ -24,8 +25,10 @@ abstract class StoryListDatabase: RoomDatabase() {
         @JvmStatic
         fun getInstance(context: Context): StoryListDatabase {
             return instance ?: synchronized(this) {
-                instance = Room.databaseBuilder(context.applicationContext, StoryListDatabase::class.java, "story_image_database")
+                val roomBuilder = Room.databaseBuilder(context.applicationContext, StoryListDatabase::class.java, "story_image_database")
                     .fallbackToDestructiveMigration()
+                if (IsRunningTest.isRunningText) roomBuilder.allowMainThreadQueries()
+                instance = roomBuilder
                     .build()
                 return requireNotNull(instance)
             }

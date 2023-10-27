@@ -9,6 +9,7 @@ import com.rjial.storybook.data.database.database.StoryListDatabase
 import com.rjial.storybook.data.database.entity.StoryListRemoteKeys
 import com.rjial.storybook.network.endpoint.StoryEndpoint
 import com.rjial.storybook.network.response.ListStoryItem
+import com.rjial.storybook.util.wrapEspressoIdlingResource
 
 @OptIn(ExperimentalPagingApi::class)
 class StoryListRemoteMediator(
@@ -46,7 +47,8 @@ class StoryListRemoteMediator(
             }
         }
         try {
-            val responseData = apiService.getAllStoriesSus(location = if (withLoc) 1 else 0, page = page, size = state.config.pageSize)
+            wrapEspressoIdlingResource {
+                val responseData = apiService.getAllStoriesSus(location = if (withLoc) 1 else 0, page = page, size = state.config.pageSize)
 
             val endOfPaginationReached = responseData.listStory.isEmpty()
 
@@ -64,6 +66,7 @@ class StoryListRemoteMediator(
                 database.storyListDao().insertStory(responseData.listStory)
             }
             return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
+            }
         }catch (exc: Exception) {
             return MediatorResult.Error(exc)
         }
