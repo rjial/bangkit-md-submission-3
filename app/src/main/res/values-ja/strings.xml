@@ -13,4 +13,6 @@
     <string name="empty">ブランク</string>
     <string name="loading">ローディング</string>
     <string name="location">場所 : %1$s, %2$s</string>
+    <string name="retry">リトライ</string>
+    <string name="timeout">タイムアウト</string>
 </resources>

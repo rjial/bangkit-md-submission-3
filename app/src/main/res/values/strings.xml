@@ -12,6 +12,8 @@
     <string name="logout">Logout</string>
     <string name="empty">Empty</string>
     <string name="loading">Loading</string>
-    <string name="title_activity_story_map">StoryMapActivity</string>
+    <string name="title_activity_story_map" translatable="false">StoryMapActivity</string>
     <string name="location">Location : %1$s, %2$s</string>
+    <string name="retry">Retry</string>
+    <string name="timeout">Timeout</string>
 </resources>

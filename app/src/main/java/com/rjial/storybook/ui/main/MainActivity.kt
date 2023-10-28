@@ -19,6 +19,7 @@ import com.rjial.storybook.data.viewmodel.factory.StoryListVMFactory
 import com.rjial.storybook.databinding.ActivityMainBinding
 import com.rjial.storybook.ui.authentication.login.LoginAuthActivity
 import com.rjial.storybook.ui.main.adapter.StoryListAdapter
+import com.rjial.storybook.ui.main.adapter.StoryLoadingStateAdapter
 import com.rjial.storybook.ui.map.StoryMapActivity
 import com.rjial.storybook.ui.story.add.AddStoryActivity
 import com.rjial.storybook.util.injection.StoryAuthAppPrefInjection
@@ -41,7 +42,11 @@ class MainActivity : AppCompatActivity() {
         val dividerItemDecoration = DividerItemDecoration(this, layoutManager.orientation)
         binding.rcvStory.layoutManager = layoutManager
         binding.rcvStory.addItemDecoration(dividerItemDecoration)
-        binding.rcvStory.adapter = adapter
+        binding.rcvStory.adapter = adapter.withLoadStateFooter(
+            footer = StoryLoadingStateAdapter {
+                adapter.retry()
+            }
+        )
         loadStories()
         binding.btnCreateStoryFAB.setOnClickListener {
             val intent = Intent(this@MainActivity, AddStoryActivity::class.java)
