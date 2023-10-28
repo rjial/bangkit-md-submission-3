@@ -75,6 +75,7 @@ dependencies {
     implementation("androidx.room:room-paging:2.6.0-rc01")
     implementation("androidx.test:core-ktx:1.5.0")
     implementation("androidx.test.espresso:espresso-idling-resource:3.5.1")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 //    implementation("androidx.test.espresso:espresso-contrib:3.5.1")
     testImplementation("junit:junit:4.12")
     testImplementation("junit:junit:4.12")

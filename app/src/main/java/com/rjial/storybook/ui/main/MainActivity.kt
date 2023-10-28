@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity() {
                 adapter.retry()
             }
         )
+        binding.lytSwipeRefreshStory.setOnRefreshListener { adapter.refresh() }
         loadStories()
         binding.btnCreateStoryFAB.setOnClickListener {
             val intent = Intent(this@MainActivity, AddStoryActivity::class.java)
@@ -103,12 +104,14 @@ class MainActivity : AppCompatActivity() {
                     is LoadState.Error -> {
                         Toast.makeText(this@MainActivity, (loadState.source.refresh as LoadState.Error).error.message, Toast.LENGTH_SHORT).show()
                         loadingFunc(false)
+                        binding.lytSwipeRefreshStory.isRefreshing = false
                     }
                     LoadState.Loading -> {
                         if (firstLoad) loadingFunc(true)
                     }
                     is LoadState.NotLoading -> {
                         loadingFunc(false)
+                        binding.lytSwipeRefreshStory.isRefreshing = false
                         firstLoad = false
                     }
                 }
