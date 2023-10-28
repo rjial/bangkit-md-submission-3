@@ -12,7 +12,6 @@ import com.rjial.storybook.network.endpoint.StoryEndpoint
 import com.rjial.storybook.network.response.ListStoryItem
 import com.rjial.storybook.network.response.StoryAddResponse
 import com.rjial.storybook.network.response.StoryListResponse
-import com.rjial.storybook.util.ResponseResult
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
@@ -33,14 +32,7 @@ class StoryListRepository(
         }
     }
 
-    suspend fun getAllStoriesSus(withLoc: Boolean = false, page: Int? = 1, size: Int? = 10): ResponseResult<StoryListResponse> {
-        return try {
-            val response = apiService.getAllStoriesSus(if (withLoc) 1 else 0, page, size)
-            ResponseResult.Success(response)
-        } catch (e: Exception) {
-            ResponseResult.Error(e.message!!.toString())
-        }
-    }
+    suspend fun getAllStoriesSus(withLoc: Boolean = false, page: Int? = 1, size: Int? = 10): Result<StoryListResponse>  = kotlin.runCatching { apiService.getAllStoriesSus(if (withLoc) 1 else 0, page, size) }
 
 //    fun getAllStories(withLoc: Boolean = false, page: Int? = 1, size: Int? = 10) {
 //        storyList.value = ResponseResult.Loading

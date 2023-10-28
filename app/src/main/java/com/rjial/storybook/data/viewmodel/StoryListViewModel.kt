@@ -17,20 +17,18 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
 class StoryListViewModel(private val storyListRepository: StoryListRepository): ViewModel() {
-    private val _storyList: MutableLiveData<ResponseResult<StoryListResponse>> =
-        MutableLiveData<ResponseResult<StoryListResponse>>()
-    var storyList: LiveData<ResponseResult<StoryListResponse>> = _storyList
+    private val _storyList: MutableLiveData<Result<StoryListResponse>> =
+        MutableLiveData<Result<StoryListResponse>>()
+    var storyList: LiveData<Result<StoryListResponse>> = _storyList
     private val _uploadRes: MutableLiveData<ResponseResult<StoryAddResponse>> =
         MutableLiveData<ResponseResult<StoryAddResponse>>()
     var uploadRes: LiveData<ResponseResult<StoryAddResponse>> = _uploadRes
     fun getAllStoriesSus(withLoc: Boolean, page: Int? = 1, size: Int? = 10) {
         EspressoIdlingResource.increment()
         viewModelScope.launch {
-            val storiesSus = kotlin.runCatching { storyListRepository.getAllStoriesSus(withLoc, page, size) }
-            storiesSus.onSuccess {
-                _storyList.value = it
-                EspressoIdlingResource.decrement()
-            }
+            val storiesSus = storyListRepository.getAllStoriesSus(withLoc, page, size)
+            _storyList.value = storiesSus
+            EspressoIdlingResource.decrement()
         }
     }
 
@@ -45,5 +43,14 @@ class StoryListViewModel(private val storyListRepository: StoryListRepository): 
 //    }
     suspend fun uploadStorySus(photo: MultipartBody.Part, description: RequestBody, lat: RequestBody? = null, lon: RequestBody? = null): Result<StoryAddResponse> {
         return storyListRepository.uploadStorySus(photo, description, lat, lon)
+    }
+
+    fun getAllStoriesLoc(callback: (story: StoryListResponse) -> Unit) {
+        viewModelScope.launch {
+            val result = storyListRepository.getAllStoriesSus(true, size = -1)
+            result.onSuccess {
+                callback(it)
+            }
+        }
     }
 }

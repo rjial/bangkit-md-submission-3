@@ -2,9 +2,7 @@ package com.rjial.storybook.ui.map
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -20,7 +18,6 @@ import com.rjial.storybook.data.viewmodel.StoryListViewModel
 import com.rjial.storybook.data.viewmodel.factory.StoryListVMFactory
 import com.rjial.storybook.databinding.ActivityStoryMapBinding
 import com.rjial.storybook.network.response.StoryListResponse
-import com.rjial.storybook.util.ResponseResult
 import com.rjial.storybook.util.injection.StoryListInjection
 
 class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -116,26 +113,8 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun loadStoriesWithLoc(callback: (res: StoryListResponse) -> Unit) {
-        var pageIndex = 1
-
-        storyListViewModel.storyList.observe(this) {
-            if (it != null) {
-                when(it) {
-                    is ResponseResult.Success -> {
-                        callback(it.data)
-                        if (it.data.listStory.isNotEmpty()) {
-                            storyListViewModel.getAllStoriesSus(true, pageIndex)
-                            pageIndex++
-                        }
-                        Log.d("LIST_STORY", it.data.toString())
-                    }
-                    is ResponseResult.Error -> {
-                        Toast.makeText(this@StoryMapActivity, it.error, Toast.LENGTH_SHORT).show()
-                    }
-                    else -> {}
-                }
-            }
+        storyListViewModel.getAllStoriesLoc {
+            callback(it)
         }
-        storyListViewModel.getAllStoriesSus(true, pageIndex)
     }
 }
