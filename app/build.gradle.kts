@@ -80,7 +80,7 @@ dependencies {
     testImplementation("junit:junit:4.12")
     testImplementation("junit:junit:4.12")
     testImplementation("org.testng:testng:6.9.6")
-    ksp("androidx.room:room-compiler:2.5.2")
+    ksp("androidx.room:room-compiler:2.6.0")
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.mockito:mockito-core:3.12.4")
     testImplementation("org.mockito:mockito-inline:3.12.4")
