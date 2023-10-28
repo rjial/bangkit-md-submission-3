@@ -56,7 +56,8 @@
         android:layout_margin="16dp"
         android:layout_gravity="bottom|end"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/button_for_add_story" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

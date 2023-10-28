@@ -16,9 +16,6 @@ import com.rjial.storybook.network.response.ListStoryItem
 class DetailStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailStoryBinding
 
-    companion object {
-        const val DETAIL_STORY_EXTRA = "detail_story_extra"
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityDetailStoryBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
@@ -90,6 +87,10 @@ class DetailStoryActivity : AppCompatActivity() {
     override fun onLowMemory() {
         super.onLowMemory()
         binding.mapDetailStory.onLowMemory()
+    }
+
+    companion object {
+        const val DETAIL_STORY_EXTRA = "detail_story_extra"
     }
 
 }

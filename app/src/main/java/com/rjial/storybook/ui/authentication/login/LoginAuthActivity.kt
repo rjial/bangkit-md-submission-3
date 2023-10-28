@@ -28,37 +28,11 @@ class LoginAuthActivity : AppCompatActivity() {
         appPreferenceViewModel = ViewModelProvider(this, AppPrefVMFactory.getInstance(StoryAuthAppPrefInjection.provideRepository(application.datastore)))[AppPreferencesViewModel::class.java]
 
 
-//        val loginObserver: Observer<ResponseResult<StoryAuthLoginResponse?>> = Observer {
-//            when(it) {
-//                is ResponseResult.Success -> {
-//                    binding.btnStoryLoginProceed.visibility = View.VISIBLE
-//                    binding.pbLoginLoading.visibility = View.GONE
-//                    appPreferenceViewModel.loginResponse.removeObservers(this@LoginAuthActivity)
-//                    val intent = Intent(this@LoginAuthActivity, MainActivity::class.java)
-//                    startActivity(intent)
-//                    finish()
-//                }
-//                is ResponseResult.Error -> {
-//                    binding.btnStoryLoginProceed.visibility = View.VISIBLE
-//                    binding.pbLoginLoading.visibility = View.GONE
-//                    Toast.makeText(this@LoginAuthActivity, it.error, Toast.LENGTH_SHORT).show()
-//                    appPreferenceViewModel.loginResponse.removeObservers(this@LoginAuthActivity)
-//                }
-//
-//                ResponseResult.Loading -> {
-//                    binding.btnStoryLoginProceed.visibility = View.GONE
-//                    binding.pbLoginLoading.visibility = View.VISIBLE
-//                    Toast.makeText(this@LoginAuthActivity, "Loading", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//        }
         setContentView(binding.root)
 
         with(binding) {
             btnStoryLoginProceed.setOnClickListener {
                 doLogin(edtEmailLogin.text.toString(), edtPasswordLogin.text.toString())
-//                appPreferenceViewModel.doLogin(edtEmailLogin.text.toString(), edtPasswordLogin.text.toString())
-//                appPreferenceViewModel.loginResponse.observe(this@LoginAuthActivity, loginObserver)
             }
             btnStoryToRegister.setOnClickListener {
                 val intent = Intent(this@LoginAuthActivity, RegisterAuthActivity::class.java)

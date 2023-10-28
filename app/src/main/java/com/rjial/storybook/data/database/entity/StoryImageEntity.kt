@@ -16,6 +16,4 @@ data class StoryImageEntity(
     @ColumnInfo(name = "image_url")
     var imageUrl: String = "",
 
-) : Parcelable {
-
-}
+) : Parcelable

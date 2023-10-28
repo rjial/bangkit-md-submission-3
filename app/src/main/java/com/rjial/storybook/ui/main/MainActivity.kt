@@ -40,44 +40,46 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         val layoutManager = LinearLayoutManager(this)
         val dividerItemDecoration = DividerItemDecoration(this, layoutManager.orientation)
-        binding.rcvStory.layoutManager = layoutManager
-        binding.rcvStory.addItemDecoration(dividerItemDecoration)
-        binding.rcvStory.adapter = adapter.withLoadStateFooter(
-            footer = StoryLoadingStateAdapter {
-                adapter.retry()
+
+        binding.apply {
+            rcvStory.layoutManager = layoutManager
+            rcvStory.addItemDecoration(dividerItemDecoration)
+            rcvStory.adapter = adapter.withLoadStateFooter(
+                footer = StoryLoadingStateAdapter {
+                    adapter.retry()
+                }
+            )
+            lytSwipeRefreshStory.setOnRefreshListener { adapter.refresh() }
+            loadStories()
+            btnCreateStoryFAB.setOnClickListener {
+                val intent = Intent(this@MainActivity, AddStoryActivity::class.java)
+                startActivity(intent)
             }
-        )
-        binding.lytSwipeRefreshStory.setOnRefreshListener { adapter.refresh() }
-        loadStories()
-        binding.btnCreateStoryFAB.setOnClickListener {
-            val intent = Intent(this@MainActivity, AddStoryActivity::class.java)
-            startActivity(intent)
-        }
-        binding.appBarStory.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.action_logout -> {
-                    val viewModel = ViewModelProvider(this@MainActivity, AppPrefVMFactory(
-                        StoryAuthAppPrefInjection.provideRepository(application.datastore))
-                    )[AppPreferencesViewModel::class.java]
-                    viewModel.doLogout()
-                    StoryListInjection.stopApiInstance()
-                    finish()
-                    val intent = Intent(this@MainActivity, LoginAuthActivity::class.java)
-                    startActivity(intent)
-                    true
+            appBarStory.setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.action_logout -> {
+                        val viewModel = ViewModelProvider(this@MainActivity, AppPrefVMFactory(
+                            StoryAuthAppPrefInjection.provideRepository(application.datastore))
+                        )[AppPreferencesViewModel::class.java]
+                        viewModel.doLogout()
+                        StoryListInjection.stopApiInstance()
+                        finish()
+                        val intent = Intent(this@MainActivity, LoginAuthActivity::class.java)
+                        startActivity(intent)
+                        true
+                    }
+                    R.id.action_map -> {
+                        val intent = Intent(this@MainActivity, StoryMapActivity::class.java)
+                        startActivity(intent)
+                        true
+                    }
+                    else -> false
                 }
-                R.id.action_map -> {
-                    val intent = Intent(this@MainActivity, StoryMapActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                else -> false
             }
         }
     }
 
     private fun loadingFunc(loading: Boolean) {
-//        if (!firstLoad) {
             when(loading) {
                 true -> {
                     binding.pbStoryLoading.visibility = View.VISIBLE
@@ -88,8 +90,6 @@ class MainActivity : AppCompatActivity() {
                     binding.rcvStory.visibility = View.VISIBLE
                 }
             }
-//            firstLoad = !firstLoad
-//        }
     }
 
     override fun onResume() {

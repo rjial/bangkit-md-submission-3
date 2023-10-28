@@ -10,5 +10,4 @@ data class StoryListRemoteKeys(
     val id: String,
     val prevKey: Int?,
     val nextKey: Int?
-) {
-}
+)

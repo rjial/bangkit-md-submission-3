@@ -18,7 +18,6 @@ import com.rjial.storybook.ui.main.adapter.StoryListAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -60,7 +59,7 @@ class StoryListViewModelTest {
             workerDispatcher = Dispatchers.Main
         )
         differ.submitData(actualStories)
-        Assert.assertNotNull(differ.snapshot())
+        assertNotNull(differ.snapshot())
     }
     @Test
     fun `Memastikan jumlah data sesuai dengan yang diharapkan`() = runTest {
@@ -78,7 +77,7 @@ class StoryListViewModelTest {
             workerDispatcher = Dispatchers.Main
         )
         differ.submitData(actualStories)
-        Assert.assertEquals(dummyStories.size, differ.snapshot().items.size)
+        assertEquals(dummyStories.size, differ.snapshot().items.size)
     }
     @Test
     fun `Memastikan data pertama yang dikembalikan sesuai`() = runTest {
@@ -96,7 +95,7 @@ class StoryListViewModelTest {
             workerDispatcher = Dispatchers.Main
         )
         differ.submitData(actualStories)
-        Assert.assertEquals(dummyStories[0], differ.snapshot().items[0])
+        assertEquals(dummyStories[0], differ.snapshot().items[0])
     }
     @Test
     fun `Memastikan jumlah data yang dikembalikan nol`() = runTest {
@@ -114,7 +113,7 @@ class StoryListViewModelTest {
             workerDispatcher = Dispatchers.Main
         )
         differ.submitData(actualStories)
-        Assert.assertEquals(0, differ.snapshot().items.size)
+        assertEquals(0, differ.snapshot().items.size)
     }
     private val noopListUpdateCallback = object : ListUpdateCallback {
         override fun onInserted(position: Int, count: Int) {}
@@ -131,7 +130,7 @@ class StoryListFakePagingSource: PagingSource<Int, LiveData<List<ListStoryItem>>
             return PagingData.from(res.listStory)
         }
     }
-    override fun getRefreshKey(state: PagingState<Int, LiveData<List<ListStoryItem>>>): Int? = 0
+    override fun getRefreshKey(state: PagingState<Int, LiveData<List<ListStoryItem>>>): Int = 0
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, LiveData<List<ListStoryItem>>> {
         return LoadResult.Page(emptyList(), 0, 1)

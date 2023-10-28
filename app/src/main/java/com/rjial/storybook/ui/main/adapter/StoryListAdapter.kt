@@ -15,7 +15,7 @@ import com.rjial.storybook.databinding.ItemStoryBinding
 import com.rjial.storybook.network.response.ListStoryItem
 import com.rjial.storybook.ui.story.detail.DetailStoryActivity
 
-class StoryListAdapter(): PagingDataAdapter<ListStoryItem, StoryListAdapter.ViewHolder>(StoryListDiffCallback) {
+class StoryListAdapter : PagingDataAdapter<ListStoryItem, StoryListAdapter.ViewHolder>(StoryListDiffCallback) {
 
     object StoryListDiffCallback: DiffUtil.ItemCallback<ListStoryItem>() {
         override fun areItemsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {

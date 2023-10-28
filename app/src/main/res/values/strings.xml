@@ -18,4 +18,17 @@
     <string name="timeout">Timeout</string>
     <string name="error_email">Email must be contain @</string>
     <string name="error_password">Password must be more than 8 characters</string>
+    <string name="story_book_logo">story book logo</string>
+    <string name="button_for_add_story">button for add story</string>
+    <string name="preview_image">preview image</string>
+    <string name="with_location">With Location</string>
+    <string name="image_from_story">image from story</string>
+    <string name="logo_for_auth">logo for auth</string>
+    <string name="button_for_change_map_type">button for change map type</string>
+    <string name="map_type">Map Type</string>
+    <string name="cancel">Cancel</string>
+    <string name="normal_map_type">Normal</string>
+    <string name="satellite_map_type">Satellite</string>
+    <string name="terrain_map_type">Terrain</string>
+    <string name="hybrid_map_type">Hybrid</string>
 </resources>

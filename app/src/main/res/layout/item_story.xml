@@ -20,7 +20,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:scaleType="centerCrop"
-            tools:src="@drawable/ic_launcher_background" />
+            tools:src="@drawable/ic_launcher_background"
+            android:contentDescription="@string/image_from_story" />
         <LinearLayout
             app:layout_constraintTop_toBottomOf="@id/imgStoryItem"
             android:layout_width="match_parent"

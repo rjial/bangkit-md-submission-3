@@ -56,9 +56,6 @@
             android:name=".ui.story.add.AddStoryActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.story.list.ListStoryActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.authentication.login.LoginAuthActivity"
             android:exported="false" />
         <activity

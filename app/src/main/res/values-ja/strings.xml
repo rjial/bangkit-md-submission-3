@@ -17,4 +17,17 @@
     <string name="timeout">タイムアウト</string>
     <string name="error_email">電子メールには @ が含まれていなければならない。</string>
     <string name="error_password">パスワードは8文字以上</string>
+    <string name="story_book_logo">ストーリーブックのロゴ</string>
+    <string name="button_for_add_story">ストーリーを追加するボタン</string>
+    <string name="preview_image">プレビュー画像</string>
+    <string name="with_location">位置情報あり</string>
+    <string name="image_from_story">ストーリーからのイメージ</string>
+    <string name="logo_for_auth">認証用のロゴ</string>
+    <string name="button_for_change_map_type">マップタイプを変更するボタン</string>
+    <string name="map_type">マップの種類</string>
+    <string name="cancel">キャンセル</string>
+    <string name="normal_map_type">Normal</string>
+    <string name="satellite_map_type">Satellite</string>
+    <string name="terrain_map_type">Terrain</string>
+    <string name="hybrid_map_type">Hybrid</string>
 </resources>

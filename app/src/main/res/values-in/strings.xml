@@ -17,4 +17,17 @@
     <string name="timeout">Waktu Habis</string>
     <string name="error_email">Email harus mengandung @</string>
     <string name="error_password">Password harus lebih dari 8 karakter</string>
+    <string name="story_book_logo">logo story book</string>
+    <string name="button_for_add_story">tombol untuk menambahkan story</string>
+    <string name="preview_image">pramuat gambar</string>
+    <string name="with_location">Dengan Lokasi</string>
+    <string name="image_from_story">Gambar dari story</string>
+    <string name="logo_for_auth">logo dari autentikasi</string>
+    <string name="button_for_change_map_type">tombol untuk mengubah map type</string>
+    <string name="map_type">Jenis Map</string>
+    <string name="cancel">Batal</string>
+    <string name="normal_map_type">Normal</string>
+    <string name="satellite_map_type">Satellite</string>
+    <string name="terrain_map_type">Terrain</string>
+    <string name="hybrid_map_type">Hybrid</string>
 </resources>

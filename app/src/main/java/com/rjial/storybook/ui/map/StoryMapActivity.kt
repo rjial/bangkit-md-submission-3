@@ -38,14 +38,14 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         builderSingle = AlertDialog.Builder(this)
         mapTypeListAdapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1)
-        builderSingle.setTitle("Map Type")
-        builderSingle.setNegativeButton("Cancel") { dialog, _ ->
+        builderSingle.setTitle(getString(R.string.map_type))
+        builderSingle.setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
             dialog.dismiss()
         }
-        mapTypeListAdapter.add("Normal")
-        mapTypeListAdapter.add("Satellite")
-        mapTypeListAdapter.add("Terrain")
-        mapTypeListAdapter.add("Hybrid")
+        mapTypeListAdapter.add(getString(R.string.normal_map_type))
+        mapTypeListAdapter.add(getString(R.string.satellite_map_type))
+        mapTypeListAdapter.add(getString(R.string.terrain_map_type))
+        mapTypeListAdapter.add(getString(R.string.hybrid_map_type))
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
@@ -67,7 +67,7 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         mMap = googleMap
         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.custom_map_style))
-        loadStoriesWithLoc() {
+        loadStoriesWithLoc {
             it.listStory.forEach { item ->
                 if (item.lat != null && item.lon != null) {
                     val latLng = LatLng(item.lat.toDouble(), item.lon.toDouble())
@@ -89,16 +89,16 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
         }
         builderSingle.setAdapter(mapTypeListAdapter) { _, which ->
             when(mapTypeListAdapter.getItem(which)) {
-                "Normal" -> {
+                getString(R.string.normal_map_type) -> {
                     mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
                 }
-                "Satellite" -> {
+                getString(R.string.satellite_map_type) -> {
                     mMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
                 }
-                "Terrain" -> {
+                getString(R.string.terrain_map_type) -> {
                     mMap.mapType = GoogleMap.MAP_TYPE_TERRAIN
                 }
-                "Hybrid" -> {
+                getString(R.string.hybrid_map_type) -> {
                     mMap.mapType = GoogleMap.MAP_TYPE_HYBRID
                 }
             }
@@ -107,10 +107,6 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
         binding.btnMapTypeFAB.setOnClickListener {
             builderSingle.show()
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 
     private fun loadStoriesWithLoc(callback: (res: StoryListResponse) -> Unit) {

@@ -18,7 +18,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:scaleType="centerCrop"
             tools:src="@drawable/ic_launcher_background"
-            />
+            android:contentDescription="@string/preview_image" />
         <LinearLayout
             android:id="@+id/lytButtonImgStory"
             android:layout_width="match_parent"
@@ -45,7 +45,7 @@
             android:id="@+id/swToggleLocAddStory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="With Location"
+            android:text="@string/with_location"
             app:layout_constraintBottom_toTopOf="@+id/lytDescAddStory"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

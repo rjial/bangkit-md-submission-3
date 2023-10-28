@@ -1,6 +1,5 @@
 package com.rjial.storybook.network.service
 
-import com.rjial.storybook.BuildConfig
 import com.rjial.storybook.network.endpoint.StoryEndpoint
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -10,23 +9,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class StoryListService {
 
-    companion object {
-        @Volatile
-        private var instance: StoryListService? = null
-
-        @JvmStatic
-        fun getInstance(): StoryListService {
-            return instance ?: synchronized(this) {
-                instance = StoryListService()
-                return StoryListService()
-            }
-        }
-        @JvmStatic
-        fun stopInstance() {
-            if (instance != null) instance = null
-        }
-
-    }
     var API_URL = "https://story-api.dicoding.dev/v1/"
 
     fun getService(token: String): StoryEndpoint {
@@ -49,5 +31,23 @@ class StoryListService {
             .client(client)
             .build()
         return retrofit.create(StoryEndpoint::class.java)
+    }
+
+    companion object {
+        @Volatile
+        private var instance: StoryListService? = null
+
+        @JvmStatic
+        fun getInstance(): StoryListService {
+            return instance ?: synchronized(this) {
+                instance = StoryListService()
+                return StoryListService()
+            }
+        }
+        @JvmStatic
+        fun stopInstance() {
+            if (instance != null) instance = null
+        }
+
     }
 }

@@ -27,35 +27,9 @@ class RegisterAuthActivity : AppCompatActivity() {
         appPreferenceViewModel = ViewModelProvider(this, AppPrefVMFactory.getInstance(
             StoryAuthAppPrefInjection.provideRepository(application.datastore)))[AppPreferencesViewModel::class.java]
         setContentView(binding.root)
-//        val registerObserver: Observer<ResponseResult<StoryAuthRegisterResponse?>> = Observer<ResponseResult<StoryAuthRegisterResponse?>> {
-//            when(it) {
-//                is ResponseResult.Loading -> {
-//                    binding.btnStoryRegisterProceed.visibility = View.GONE
-//                    binding.pbRegisterLoading.visibility = View.VISIBLE
-//                }
-//                is ResponseResult.Success -> {
-//                    binding.btnStoryRegisterProceed.visibility = View.VISIBLE
-//                    binding.pbRegisterLoading.visibility = View.GONE
-//                    appPreferenceViewModel.registerResponse.removeObservers(this@RegisterAuthActivity)
-//                }
-//                is ResponseResult.Error -> {
-//                    binding.btnStoryRegisterProceed.visibility = View.VISIBLE
-//                    binding.pbRegisterLoading.visibility = View.GONE
-//                    appPreferenceViewModel.registerResponse.removeObservers(this@RegisterAuthActivity)
-//                    Toast.makeText(this@RegisterAuthActivity, it.error, Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//        }
         with(binding) {
             btnStoryRegisterProceed.setOnClickListener {
                 doRegister(edtEmailRegister.text.toString(), edtNamaRegister.text.toString(), edtPasswordRegister.text.toString())
-//                appPreferenceViewModel.doRegister(edtEmailRegister.text.toString(), edtNamaRegister.text.toString(), edtPasswordRegister.text.toString()) {
-//                    Toast.makeText(this@RegisterAuthActivity, it, Toast.LENGTH_SHORT).show()
-//                    val intent = Intent(this@RegisterAuthActivity, LoginAuthActivity::class.java)
-//                    startActivity(intent)
-//                    finish()
-//                }
-//                appPreferenceViewModel.registerResponse.observe(this@RegisterAuthActivity, registerObserver)
             }
             btnStoryToLogin.setOnClickListener {
                 val intent = Intent(this@RegisterAuthActivity, LoginAuthActivity::class.java)

@@ -16,7 +16,8 @@
             android:transitionName="imgdetail"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            android:contentDescription="@string/image_from_story" />
         <TextView
             android:id="@+id/txtTitleDetailStory"
             android:layout_width="wrap_content"
@@ -43,21 +44,6 @@
             android:layout_marginTop="16dp"
             android:layout_width="match_parent"
             android:layout_height="300dp"/>
-<!--        <FrameLayout-->
-<!--            android:id="@+id/lytMapFragment"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/txtDescDetailStory"-->
-<!--            android:layout_marginTop="16dp"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content">-->
-
-<!--            <FrameLayout-->
-<!--                xmlns:map="http://schemas.android.com/apk/res-auto"-->
-<!--                android:id="@+id/mapDetailStory"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="300dp"-->
-<!--                />-->
-
-<!--        </FrameLayout>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

@@ -16,10 +16,6 @@ import kotlinx.coroutines.launch
 
 class AppPreferencesViewModel(private val repository: StoryAuthAppPrefRepository): ViewModel() {
     private val authService: StoryAuthEndpoint = StoryAuthService.getInstance().getService()
-    fun getTokenAuth(): LiveData<String> {
-        return repository.getTokenAuth()
-    }
-
     fun setTokenAuth(token: String) {
         viewModelScope.launch {
             repository.setTokenAuth(token)

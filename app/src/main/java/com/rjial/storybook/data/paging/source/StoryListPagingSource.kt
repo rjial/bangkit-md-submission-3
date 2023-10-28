@@ -7,9 +7,6 @@ import com.rjial.storybook.network.response.ListStoryItem
 
 class StoryListPagingSource(private val storyEndpoint: StoryEndpoint, private val location: Boolean = false): PagingSource<Int, ListStoryItem>() {
 
-    private companion object {
-        const val INITIAL_PAGE_INDEX = 1
-    }
 
     override fun getRefreshKey(state: PagingState<Int, ListStoryItem>): Int? {
         return state.anchorPosition?.let {
@@ -31,5 +28,9 @@ class StoryListPagingSource(private val storyEndpoint: StoryEndpoint, private va
         } catch (exc: Exception) {
             return LoadResult.Error(exc)
         }
+    }
+
+    private companion object {
+        const val INITIAL_PAGE_INDEX = 1
     }
 }

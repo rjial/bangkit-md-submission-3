@@ -12,7 +12,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.test.espresso.IdlingRegistry
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
@@ -34,7 +33,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
 
-class AddStoryActivity() : AppCompatActivity() {
+class AddStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddStoryBinding
     private lateinit var storyViewModel: StoryListViewModel
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -97,25 +96,6 @@ class AddStoryActivity() : AppCompatActivity() {
                         loadingFunc(false)
                     }
                 }
-//                storyViewModel.uploadRes.observe(this@AddStoryActivity) {
-//                    if (it != null) {
-//                        when(it) {
-//                            is ResponseResult.Success -> {
-//                                loadingFunc(false)
-//                                storyViewModel.uploadRes.removeObservers(this@AddStoryActivity)
-//                                finish()
-//                            }
-//                            is ResponseResult.Error -> {
-//                                loadingFunc(false)
-//                                Toast.makeText(this@AddStoryActivity, it.error, Toast.LENGTH_SHORT)
-//                                    .show()
-//                                storyViewModel.uploadRes.removeObservers(this@AddStoryActivity)
-//                            }
-//                            else -> loadingFunc(true)
-//                        }
-//                    }
-//                }
-//                storyViewModel.uploadStory(multipartBody, requestBody, latRb, lonRb)
             } else {
                 Toast.makeText(this, "Select image first!", Toast.LENGTH_SHORT).show()
             }
