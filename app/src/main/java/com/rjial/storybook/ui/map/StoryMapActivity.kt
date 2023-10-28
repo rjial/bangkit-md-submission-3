@@ -3,7 +3,9 @@ package com.rjial.storybook.ui.map
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -26,7 +28,8 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var binding: ActivityStoryMapBinding
     private lateinit var storyListViewModel: StoryListViewModel
     private val boundsBuilder = LatLngBounds.builder()
-//    private val coroutineScope = CoroutineScope(Dispatchers.IO)
+    private lateinit var builderSingle: AlertDialog.Builder
+    private lateinit var mapTypeListAdapter: ArrayAdapter<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +37,17 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
         binding = ActivityStoryMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
         storyListViewModel = ViewModelProvider(this, StoryListVMFactory(StoryListInjection.provideInjection(this)))[StoryListViewModel::class.java]
+
+        builderSingle = AlertDialog.Builder(this)
+        mapTypeListAdapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1)
+        builderSingle.setTitle("Map Type")
+        builderSingle.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.dismiss()
+        }
+        mapTypeListAdapter.add("Normal")
+        mapTypeListAdapter.add("Satellite")
+        mapTypeListAdapter.add("Terrain")
+        mapTypeListAdapter.add("Hybrid")
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
@@ -73,49 +87,38 @@ class StoryMapActivity : AppCompatActivity(), OnMapReadyCallback {
                 300
             ))
         }
-//        val bounds = boundsBuilder.build()
-//        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(
-//            bounds,
-//            resources.displayMetrics.widthPixels,
-//            resources.displayMetrics.heightPixels,
-//            300
-//        ))
-//        val bounds = boundsBuilder.build()
-//        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(
-//            bounds,
-//            resources.displayMetrics.widthPixels,
-//            resources.displayMetrics.heightPixels,
-//            300
-//        ))
+        builderSingle.setAdapter(mapTypeListAdapter) { _, which ->
+            when(mapTypeListAdapter.getItem(which)) {
+                "Normal" -> {
+                    mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
+                }
+                "Satellite" -> {
+                    mMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
+                }
+                "Terrain" -> {
+                    mMap.mapType = GoogleMap.MAP_TYPE_TERRAIN
+                }
+                "Hybrid" -> {
+                    mMap.mapType = GoogleMap.MAP_TYPE_HYBRID
+                }
+            }
+        }
 
-        // Add a marker in Sydney and move the camera
-//        val sydney = LatLng(-34.0, 151.0)
-//        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
-//        val testingLoc = LatLng(-7.40407, 109.36273)
-//        mMap.addMarker(MarkerOptions()
-//            .position(testingLoc)
-//            .title("teslagi"))
-//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(testingLoc, 15f))
+        binding.btnMapTypeFAB.setOnClickListener {
+            builderSingle.show()
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-//        coroutineScope.cancel()
     }
 
     private fun loadStoriesWithLoc(callback: (res: StoryListResponse) -> Unit) {
         var pageIndex = 1
-//        StoryListInjection.provideInjection(application).getAllStoriesFlow(true).collect {
-//            it.map {item ->
-//                callback(item)
-//            }
-//        }
 
         storyListViewModel.storyList.observe(this) {
             if (it != null) {
                 when(it) {
-//                    is ResponseResult.Loading -> {}
                     is ResponseResult.Success -> {
                         callback(it.data)
                         if (it.data.listStory.isNotEmpty()) {

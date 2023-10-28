@@ -11,5 +11,5 @@
         android:title="Map"
         android:contentDescription="Map"
         app:showAsAction="always"
-        android:icon="@drawable/baseline_map_24"/>
+        android:icon="@drawable/baseline_map_onprimary_24"/>
 </menu>
