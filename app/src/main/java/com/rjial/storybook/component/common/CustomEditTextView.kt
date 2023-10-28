@@ -13,15 +13,9 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
 import com.rjial.storybook.R
 
-enum class TYPE_TEXT {
-    EMAIL,
-    PASSWORD,
-    TEXT
-}
 class CustomEditTextView: AppCompatEditText, View.OnTouchListener {
 
     private lateinit var clearButtonImage: Drawable
-    var typeText = TYPE_TEXT.TEXT
     constructor(context: Context) : super(context) {
         init()
     }
@@ -59,8 +53,14 @@ class CustomEditTextView: AppCompatEditText, View.OnTouchListener {
                 if (s.toString().isNotEmpty()) {
                     showClearButton()
                     when (inputType - InputType.TYPE_CLASS_TEXT) {
-                        InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS -> if (!s.toString().contains('@')) error = "Email harus mengandung @"
-                        InputType.TYPE_TEXT_VARIATION_PASSWORD -> if (s.toString().length < 8) error = "Password harus lebih dari 8 karakter"
+                        InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS -> if (!s.toString().contains('@')) error =
+                            context.getString(
+                                R.string.error_email
+                            )
+                        InputType.TYPE_TEXT_VARIATION_PASSWORD -> if (s.toString().length < 8) error =
+                            context.getString(
+                                R.string.error_password
+                            )
                     }
                 } else {
                     hideClearButton()

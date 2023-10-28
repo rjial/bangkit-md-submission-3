@@ -15,4 +15,6 @@
     <string name="location">場所 : %1$s, %2$s</string>
     <string name="retry">リトライ</string>
     <string name="timeout">タイムアウト</string>
+    <string name="error_email">電子メールには @ が含まれていなければならない。</string>
+    <string name="error_password">パスワードは8文字以上</string>
 </resources>

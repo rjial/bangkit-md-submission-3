@@ -16,4 +16,6 @@
     <string name="location">Location : %1$s, %2$s</string>
     <string name="retry">Retry</string>
     <string name="timeout">Timeout</string>
+    <string name="error_email">Email must be contain @</string>
+    <string name="error_password">Password must be more than 8 characters</string>
 </resources>
